@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>日语文字转语音播放</title>
+</head>
+<body>
+ 
+<p id="text">こんにちは、世界！私は中国人です</p>
+<button onclick="speakJapanese()">播放日语</button>
+ 
+<script>
+function speakJapanese() {
+    const text = document.getElementById('text').textContent;
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = 'ja-JP'; // 设置语言为日语
+    window.speechSynthesis.speak(msg);
+}
+</script>
+ 
+</body>
+</html>

@@ -38,9 +38,7 @@ var examples = [
     { "Nid": 8, "Did": 12, "Eid": 13, "Text": "今からあなたのうちへいきますが、そちらまでどれぐらいかかりますか" }
 ];
 function getData(name) {
-    console.log('getData进来了');
     if (name === "grammars") {
-        console.log(grammars, 'grammars');
         return grammars;
     }
     if (name === "definitions")

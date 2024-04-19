@@ -2,35 +2,13 @@
 <html>
 <head>
     <meta charset='UTF-8'>
-	<meta name='viewport' content='width=device-width initial-scale=1'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
     <title>日语N5-N1语法</title>
     <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
     <script src="grammarData.js"></script>
     <!--<script src="jq.js"></script>-->
 </head>
 <body>
-    <div id="grammars_box">
-    </div>
-    <script>
-        function speak(text) {
-            console.log(text, 'text')
-            //const speech = new SpeechSynthesisUtterance(text); // 创建语音消息
-
-            //window.speechSynthesis.speak(speech); // 开始读取
-            let speechSynthesis = new SpeechSynthesisUtterance();
-            speechSynthesis.lang = "ja-JP"; // 设置语言
-            speechSynthesis.volume = 1; // 设置说话的音量
-            speechSynthesis.rate = 1; // 设置说话的速度(值越大语速越快,越小语速越慢)
-            speechSynthesis.pitch = 1; // 设置话语的音调(值越大越尖锐,越低越低沉)
-            speechSynthesis.text = text; // 设置说话时的文本
-            window.speechSynthesis.speak(speechSynthesis);
-
-        }
-
-        //// 使用函数读取文本
-        //speak('Hello, this is a text-to-speech example.');
-
-    </script>
     <script>
         $(function () {
             var $gbox = $("#grammars_box");
@@ -38,7 +16,6 @@
             var grammars = getData("grammars");
             var definitions = getData("definitions");
             var examples = getData("examples");
-
             var html = "";
             grammars.forEach(item => {
                 html += "<p class='A_grammars' data-id=" + item.Nid + ">";
@@ -61,8 +38,10 @@
                     var get_examples = examples.filter(x => x.Did === ditem.Did);
                     get_examples.forEach(eitem => {
                         var ehtml = "<div class='C_examples'>";
-                        ehtml += "<li data-id=" + eitem.Eid + ">";
+                        ehtml += "<li id=" + eitem.Eid + " class='example_item'>";
+                        ehtml += "<span class='no_box'>" + (examples.findIndex(x => x.Eid === eitem.Eid) + 1) + "</span>";
                         ehtml += "<span onclick=speak('" + eitem.Text + "') >" + eitem.Text + "</span>";
+                        ehtml += "<svg onclick=speak('" + eitem.Text + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
                         ehtml += "</li>";
                         ehtml += "</div>";
                         html += ehtml;
@@ -73,29 +52,240 @@
             $gbox.html(html);
         })
     </script>
-	<style type='text/css'>
-		html {
-			overflow-x: initial !important;
-		}
-		html {
-			font-size: 14px;
-			background-color: var(--bg-color);
-			color: var(--text-color);
-			font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-			-webkit-font-smoothing: antialiased;
-		}
+    <script>
+        //-------------------------播放方法开始-------------------------
+        //控制读哪个例句id
+        var playIndex = 0;
+        //是读还是不读
+        var isPlay = false;
+        //读
+        function speak(text, eid) {
+            if (!isPlay) {
+                playIndex = eid;
+                return false;
+            }
+            let speechSynthesis = new SpeechSynthesisUtterance();
+            speechSynthesis.lang = "ja-JP"; // 设置语言
+            speechSynthesis.volume = 1; // 设置说话的音量
+            speechSynthesis.rate = $('#speed').val(); // 设置说话的速度(值越大语速越快,越小语速越慢)
+            speechSynthesis.pitch = 1; // 设置话语的音调(值越大越尖锐,越低越低沉)
+            speechSynthesis.text = text; // 设置说话时的文本
+            window.speechSynthesis.speak(speechSynthesis);
+            setTimeout(() => console.log("setTimeout---------", $('#interval').val()), $('#interval').val() * 1000);
+            return true;
+        }
+        //延时
+        function asyncThunk(Text, Eid) {
+            return function (callBack) {
+                setTimeout(() => callBack(speak(Text, Eid)), 5000);
+            };
+        }
+        //循环读
+        function* gen() {
+            var arrayPlay;
+            if (playIndex > 0)
+                arrayPlay = examples.filter(x => x.Eid >= playIndex);
+            else arrayPlay = examples;
+            for (var i = 0; i < arrayPlay.length; i++) {
+                let a1 = yield asyncThunk(arrayPlay[i].Text, arrayPlay[i].Eid);
+                //停止时，跳出循环
+                if (!a1) {
+                    break;
+                } else {
+                    $('.mask').hide();
+                    $('.loading').hide();
+                    var elementOffset = $('#' + arrayPlay[i].Eid).offset();
+                    console.log(elementOffset, 'elementOffset')
+                    var elementTop = elementOffset.top;
+                    $('body').animate({
+                        scrollTop: elementTop + 100
+                    }, 500);
+                    //设置当前读的例句高亮
+                    $('.example_item').removeClass("active");
+                    $('#' + arrayPlay[i].Eid).addClass("active");
+                    $('#' + arrayPlay[i].Eid).offset().top;
+                    //赋值序号
+                    var no = examples.findIndex(x => x.Eid === arrayPlay[i].Eid);
+                    $("#no").val(no + 1);
+                }
+            }
+        }
+        //控制中断
+        function run(fn) {
+            isPlay = true;
+            const g = fn();
+            //g=gen
+            function callBack(data) {
+                const result = g.next(data);
+                if (result.done) return;
+                result.value(callBack);
+            }
+            callBack();
+        }
+        //从no开始读
+        function speakAll() {
+            if ($("#playContral").val() === '播放暂停') {
+                callOff(!isPlay);
+            } else {
+                $('.mask').show();
+                $('.loading').show();
+                $("#playContral").val("播放暂停").show().addClass("red_start");
+                playIndex = examples[$("#no").val() - 1].Eid;
+                run(gen);
+            }
+            //$("#playContral").val("播放暂停").show().addClass("red_start");
+        }
+        //播放暂停，播放继续
+        function callOff(isPlayParm) {
+            //isPlayParm false 不放
+            if (isPlayParm === false) {
+                isPlay = false;
+                $("#playContral").val("播放继续").addClass("bule_start").removeClass("red_start");
+            }
+            if (isPlayParm === true) {
+                isPlay = true;
+                $("#playContral").val("播放暂停").removeClass("bule_start").addClass("red_start");
+                run(gen);
+            }
+        }
+        //-------------------------播放方法结束-------------------------
+    </script>
+    <div>
+        <div class="tool_box">
+            语速:<input type="number" id="speed" style="width:30px;" value="1" />
+            <div style="display:inline-block;">
+                间隔:<input type="number" id="interval" style="width: 30px;" value="5" />
+            </div>
+            序号:<input type="number" id="no" style="width: 30px;" value="1" />
+            <!--<input type="button" id="play" class="bule_start" value="播放" onclick="speakAll()" />-->
+            <input type="button" id="playContral" class="bule_start" value="开始播放" onclick="speakAll()" />
+        </div>
+        <!--语法条目-->
+        <div id="grammars_box">
+        </div>
+    </div>
+    <div class="mask"></div>
+    <div class="loading">
+        <!--<span>正在读取…</span>-->
+        <img src="https://mrslxj.github.io/N2/img/loading.gif" width="80px" height="80px" />
+    </div>
+    <style type='text/css'>
+        .loading {
+            position: fixed;
+           /* width: 100px;
+            height: 30px;*/
+            line-height: 30px;
+            text-align: center;
+            color: dodgerblue;
+            background-color: white;
+            border-radius: 15px;
+            margin: 0 auto;
+            top: 50%;
+            left: 50%;
+            margin-left: -40px;
+            margin-top: -40px;
+            /*display: none;*/
+        }
 
-		body {
-			margin: 0px;
-			padding: 0px;
-			height: auto;
-			inset: 0px;
-			font-size: 1rem;
-			line-height: 1.42857;
-			overflow-x: hidden;
-			background: inherit;
-			tab-size: 4;
-		}
-</style>
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: rgba(0,0,0,.5);
+            /*display: none;*/
+        }
+
+        html {
+            overflow-x: initial !important;
+        }
+
+        html {
+            font-size: 14px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+            height: auto;
+            inset: 0px;
+            font-size: 1rem;
+            line-height: 1.42857;
+            overflow-x: hidden;
+            background: inherit;
+            tab-size: 4;
+        }
+
+        #grammars_box {
+            margin-top: 30px;
+        }
+
+        #playContral {
+            width: 65px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        #play {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        .A_grammars {
+            font-size: 1.5rem;
+            border-bottom: 2px dashed blue;
+        }
+
+        .B_definitions {
+            font-size: 1rem;
+            color: blue;
+        }
+
+        .C_examples {
+            font-size: 0.8rem;
+            color: gray;
+        }
+
+        .tool_box {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            z-index: 1000; /* 确保元素在其他内容之上 */
+        }
+
+        .no_box {
+            border: 1px solid #808080;
+            border-radius: 10px;
+            display: inline-block;
+            text-align: center;
+            width: 15px;
+        }
+
+        .active {
+            background-color: gold;
+        }
+
+        .bule_start {
+            background-color: cornflowerblue;
+        }
+
+        .red_start {
+            background-color: crimson;
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>日语N5-N1语法</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="grammarData.js"></script>
+    <!--<script src="jq.js"></script>-->
+</head>
+<body>
+    <div id="grammars_box">
+    </div>
+    <script>
+        function speak(text) {
+            console.log(text, 'text')
+            //const speech = new SpeechSynthesisUtterance(text); // 创建语音消息
+
+            //window.speechSynthesis.speak(speech); // 开始读取
+            let speechSynthesis = new SpeechSynthesisUtterance();
+            speechSynthesis.lang = "ja-JP"; // 设置语言
+            speechSynthesis.volume = 1; // 设置说话的音量
+            speechSynthesis.rate = 1; // 设置说话的速度(值越大语速越快,越小语速越慢)
+            speechSynthesis.pitch = 1; // 设置话语的音调(值越大越尖锐,越低越低沉)
+            speechSynthesis.text = text; // 设置说话时的文本
+            window.speechSynthesis.speak(speechSynthesis);
+
+        }
+
+        //// 使用函数读取文本
+        //speak('Hello, this is a text-to-speech example.');
+
+    </script>
+    <script>
+        $(function () {
+            var $gbox = $("#grammars_box");
+
+            var grammars = getData("grammars");
+            var definitions = getData("definitions");
+            var examples = getData("examples");
+
+            var html = "";
+            grammars.forEach(item => {
+                html += "<p class='A_grammars' data-id=" + item.Nid + ">";
+                html += "<a >";
+                html += item.Text;
+                html += "</a>";
+                html += "</p>";
+
+                var get_definitions = definitions.filter(x => x.Nid === item.Nid);
+                get_definitions.forEach(ditem => {
+                    var dhtml = "<div class='B_definitions'>";
+                    dhtml += "<li data-id=" + ditem.Did + ">";
+                    dhtml += "<span>" + ditem.Text + "</span>";
+
+
+                    dhtml += "</li>";
+                    dhtml += "</div>";
+                    html += dhtml;
+
+                    var get_examples = examples.filter(x => x.Did === ditem.Did);
+                    get_examples.forEach(eitem => {
+                        var ehtml = "<div class='C_examples'>";
+                        ehtml += "<li data-id=" + eitem.Eid + ">";
+                        ehtml += "<span onclick=speak('" + eitem.Text + "') >" + eitem.Text + "</span>";
+                        ehtml += "</li>";
+                        ehtml += "</div>";
+                        html += ehtml;
+                    })
+                })
+            })
+            //html += "</div>";
+            $gbox.html(html);
+        })
+    </script>
+</body>
+</html>

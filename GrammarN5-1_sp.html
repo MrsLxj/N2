@@ -41,8 +41,8 @@
                         ehtml += "<li id=" + eitem.Eid + " class='example_item'>";
                         ehtml += "<span class='no_box'>" + (examples.findIndex(x => x.Eid === eitem.Eid) + 1) + "</span>";
                         ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') >" + eitem.Text + "</span>";
-                      /*  ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";*/
-                        ehtml += "<audio controls id='audio" + eitem.Eid + "' style='display:inline-block;height:12px;'>";
+                        /*  ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";*/
+                        ehtml += "<audio controls class='audio' id='audio" + eitem.Eid + "' style='display:none;height:12px;line-height:12px;'>";
                         var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + eitem.Text;
                         ehtml += "<source id=\"source\"" + eitem.Eid + " src='" + link + "'>";
                         ehtml += "</audio>";
@@ -68,6 +68,15 @@
             //赋值序号
             var no = examples.findIndex(x => x.Eid === eid);
             $("#no").val(no + 1);
+        }
+        function audioShow() {
+            if ($('#audioContral').val() === '显示语音') {
+                $('.audio').show();
+                $('#audioContral').val('隐藏语音');
+            } else {
+                $('.audio').hide();
+                $('#audioContral').val('显示语音');
+            }
         }
     </script>
     <script>
@@ -170,21 +179,17 @@
     </script>
     <div>
         <div class="tool_box">
-            <!--语速:<input type="number" id="speed" style="width:30px;" value="1" />-->
+            <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />-->
             <div style="display:inline-block;">
                 间隔:<input type="number" id="interval" style="width: 30px;" value="2" />
             </div>
             序号:<input type="number" id="no" style="width: 30px;" value="1" />
             <!--<input type="button" id="play" class="bule_start" value="播放" onclick="speakAll()" />-->
             <input type="button" id="playContral" class="bule_start" value="开始播放" onclick="speakAll()" />
+            <input type="button" id="audioContral" class="bule_start" value="显示语音" onclick="audioShow()" />
         </div>
         <!--语法条目-->
         <div id="grammars_box">
-        </div>
-        <div class="audio-box">
-            <audio controls id="audio">
-                <source id="source" src="">
-            </audio>
         </div>
     </div>
     <div class="mask"></div>
@@ -255,6 +260,17 @@
             border-radius: 8px;
             text-align: center;
             color: white;
+        }
+
+        #audioContral {
+            width: 65px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            float:right;
+            margin-right:8px;
         }
 
         #play {

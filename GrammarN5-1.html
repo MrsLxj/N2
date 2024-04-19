@@ -94,12 +94,12 @@
                 } else {
                     $('.mask').hide();
                     $('.loading').hide();
-                    var elementOffset = $('#' + arrayPlay[i].Eid).offset();
-                    console.log(elementOffset, 'elementOffset')
-                    var elementTop = elementOffset.top;
-                    $('body').animate({
-                        scrollTop: elementTop + 100
-                    }, 500);
+                    //var elementOffset = $('#' + arrayPlay[i].Eid).offset();
+                    //console.log(elementOffset, 'elementOffset')
+                    //var elementTop = elementOffset.top;
+                    //$('body').animate({
+                    //    scrollTop: elementTop + 100
+                    //}, 500);
                     //设置当前读的例句高亮
                     $('.example_item').removeClass("active");
                     $('#' + arrayPlay[i].Eid).addClass("active");
@@ -125,6 +125,8 @@
         //从no开始读
         function speakAll() {
             if ($("#playContral").val() === '播放暂停') {
+                $('.mask').hide();
+                $('.loading').hide();
                 callOff(!isPlay);
             } else {
                 $('.mask').show();

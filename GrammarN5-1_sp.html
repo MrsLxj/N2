@@ -83,6 +83,7 @@
                 return false;
             }
             var audio = document.getElementById('audio' + eid);
+            audio.load();
             audio.play();
             setTimeout(() => console.log("setTimeout---------", $('#interval').val()), $('#interval').val() * 1000);
             return true;

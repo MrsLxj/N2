@@ -60,7 +60,11 @@
             $('.example_item').removeClass("active");
             $('#' + eid).addClass("active");
             var audio = document.getElementById('audio' + eid);
+            audio.load();
             audio.play();
+            //setTimeoutIndex = setInterval(function () {
+            //    audio.play();
+            //}, time * 3000);
             //赋值序号
             var no = examples.findIndex(x => x.Eid === eid);
             $("#no").val(no + 1);

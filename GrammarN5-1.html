@@ -53,6 +53,8 @@
         })
     </script>
     <script>
+        let speechSynthesis = new SpeechSynthesisUtterance();
+        alert(window.speechSynthesis.getVoices())
         function speakItem(text, eid) {
             //设置当前读的例句高亮
             $('.example_item').removeClass("active");

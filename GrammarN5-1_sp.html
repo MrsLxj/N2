@@ -5,7 +5,9 @@
     <meta name='viewport' content='width=device-width initial-scale=1'>
     <title>日语N5-N1语法</title>
     <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
-    <script src="grammarData.js"></script>
+    <script src="js/grammarData.js"></script>
+    <script src="js/definitions.js"></script>
+    <script src="js/examples.js"></script>
     <!--<script src="jq.js"></script>-->
 </head>
 <body>
@@ -13,32 +15,42 @@
         $(function () {
             var $gbox = $("#grammars_box");
 
-            var grammars = getData("grammars");
-            var definitions = getData("definitions");
-            var examples = getData("examples");
+            var grammars = getGrammarsData();
+            var definitions = getDefinitionsData();
+            var examples = getExamplesData();
             var html = "";
+            var enums = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'ｼ', 'ス', 'セ', 'ソ'];
+            //词条
             grammars.forEach(item => {
                 html += "<p class='A_grammars' data-id=" + item.Nid + ">";
+                html += "<span class='grammar_no_box'>" + (grammars.findIndex(x => x.Nid === item.Nid) + 1) + "</span>";
                 html += "<a >";
                 html += item.Text;
                 html += "</a>";
+                html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
                 html += "</p>";
 
+                //解释
                 var get_definitions = definitions.filter(x => x.Nid === item.Nid);
+                //html += "<div class='B_Box'>";
+                var dindex = 0;
                 get_definitions.forEach(ditem => {
                     var dhtml = "<div class='B_definitions'>";
                     dhtml += "<li data-id=" + ditem.Did + ">";
+                    dhtml += "<span class='definitions_no_box'>" + enums[dindex] + ": </span>";
                     dhtml += "<span>" + ditem.Text + "</span>";
-
-
                     dhtml += "</li>";
                     dhtml += "</div>";
                     html += dhtml;
+                    dindex++;
 
+                    //例句
                     var get_examples = examples.filter(x => x.Did === ditem.Did);
+                    html += "<div class='C_Box'>";
                     get_examples.forEach(eitem => {
                         var ehtml = "<div class='C_examples'>";
                         ehtml += "<li id=" + eitem.Eid + " class='example_item'>";
+                        //console.log(examples.findIndex(x => x.Eid === eitem.Eid), eitem.Eid, 'examples.findIndex(x => x.Eid === eitem.Eid)')
                         ehtml += "<span class='no_box'>" + (examples.findIndex(x => x.Eid === eitem.Eid) + 1) + "</span>";
                         ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') >" + eitem.Text + "</span>";
                         /*  ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";*/
@@ -50,9 +62,10 @@
                         ehtml += "</div>";
                         html += ehtml;
                     })
+                    html += "</div>";
                 })
+                //html += "</div>";
             })
-            //html += "</div>";
             $gbox.html(html);
         })
         function speakItem(text, eid) {
@@ -70,12 +83,35 @@
             $("#no").val(no + 1);
         }
         function audioShow() {
-            if ($('#audioContral').val() === '显示语音') {
+            if ($('#audioContral').val() === '语音开') {
                 $('.audio').show();
-                $('#audioContral').val('隐藏语音');
+                $('#audioContral').val('语音关');
             } else {
                 $('.audio').hide();
-                $('#audioContral').val('显示语音');
+                $('#audioContral').val('语音开');
+            }
+        }
+        function Show(type) {
+            if (type === '词条') {
+                if ($('#dContral').val() === '解释开') {
+                    $('.B_definitions').show();
+                    $('#dContral').val('解释关');
+                } else {
+                    $('.B_definitions').hide();
+                    $('#dContral').val('解释开');
+                    //$('.C_Box').hide();
+                    //$('#eContral').val('例句开');
+                }
+            } else if (type === '例句') {
+                if ($('#eContral').val() === '例句开') {
+                    //$('.B_definitions').show();
+                    //$('#dContral').val('解释关');
+                    $('.C_Box').show();
+                    $('#eContral').val('例句关');
+                } else {
+                    $('.C_Box').hide();
+                    $('#eContral').val('例句开');
+                }
             }
         }
     </script>
@@ -86,52 +122,86 @@
         //是读还是不读
         var isPlay = false;
         //读
-        function speak(text, eid) {
+        function speak(text, eid, i) {
             if (!isPlay) {
-                playIndex = eid;
+                playIndex = examples.findIndex(x => x.Eid === eid);
                 return false;
             }
             var audio = document.getElementById('audio' + eid);
             audio.load();
             audio.play();
-            setTimeout(() => console.log("setTimeout---------", $('#interval').val()), $('#interval').val() * 1000);
             return true;
         }
         //延时
-        function asyncThunk(Text, Eid) {
+        function asyncThunk(Text, Eid, i, arrayPlay) {
             return function (callBack) {
-                setTimeout(() => callBack(speak(Text, Eid)), 5000);
+                var miao = 3;
+                if (i === 0) miao = 1;
+                if (i > 0) {
+                    if (arrayPlay[i - 1].Text.length >= 10) {
+                        miao = 4;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 20) {
+                        miao = 5;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 30) {
+                        miao = 6;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 40) {
+                        miao = 7;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 50) {
+                        miao = 8;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 60) {
+                        miao = 9;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 70) {
+                        miao = 10;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 80) {
+                        miao = 11;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 90) {
+                        miao = 12;
+                    }
+                    if (arrayPlay[i - 1].Text.length >= 100) {
+                        miao = 13;
+                    }
+                }
+                setTimeout(() => callBack(speak(Text, Eid, i)), (miao * 1000 + $('#interval').val() * 1000));
             };
         }
         //循环读
         function* gen() {
             var arrayPlay;
             if (playIndex > 0)
-                arrayPlay = examples.filter(x => x.Eid >= playIndex);
+                arrayPlay = examples.filter(x => x.Eid >= examples[playIndex].Eid);
             else arrayPlay = examples;
             for (var i = 0; i < arrayPlay.length; i++) {
-                let a1 = yield asyncThunk(arrayPlay[i].Text, arrayPlay[i].Eid);
+                if (i > 0) {
+                    var elementOffset = $('#' + examples[examples.findIndex(x => x.Eid === arrayPlay[i].Eid)].Eid).offset();
+                    var elementTop = elementOffset.top;
+                    //$('body').animate({
+                    //    scrollTop: elementTop + 10
+                    //}, 500);
+                    const targetElement = document.querySelector("#target");
+                    window.scroll({
+                        top: elementTop - 150,
+                        behavior: 'smooth'
+                    });
+                }
+                let a1 = yield asyncThunk(arrayPlay[i].Text, arrayPlay[i].Eid, i, arrayPlay);
                 //停止时，跳出循环
                 if (!a1) {
                     break;
                 } else {
                     $('.mask').hide();
                     $('.loading').hide();
-                    //$('.mask').hide();
-                    //$('.loading').hide();
-                    //var elementOffset = $('#' + arrayPlay[i].Eid).offset();
-                    //console.log(elementOffset, 'elementOffset')
-                    //var elementTop = elementOffset.top;
-                    //$('body').animate({
-                    //    scrollTop: elementTop + 100
-                    //}, 500);
                     //设置当前读的例句高亮
                     $('.example_item').removeClass("active");
                     $('#' + arrayPlay[i].Eid).addClass("active");
-                    //$('#' + arrayPlay[i].Eid).offset().top;
-                    //赋值序号
-                    var no = examples.findIndex(x => x.Eid === arrayPlay[i].Eid);
-                    $("#no").val(no + 1);
+                    $("#no").val(examples.findIndex(x => x.Eid === arrayPlay[i].Eid) + 1);
                 }
             }
         }
@@ -149,15 +219,17 @@
         }
         //从no开始读
         function speakAll() {
-            if ($("#playContral").val() === '播放暂停') {
+            if ($("#playContral").val() === '暂停') {
                 $('.mask').hide();
                 $('.loading').hide();
                 callOff(!isPlay);
             } else {
                 $('.mask').show();
                 $('.loading').show();
-                $("#playContral").val("播放暂停").show().addClass("red_start");
-                playIndex = examples[$("#no").val() - 1].Eid;
+                $("#playContral").val("暂停").show().addClass("red_start");
+                //console.log(examples, 'examples');
+                //console.log($("#no").val(), '$("#no").val()');
+                playIndex = $("#no").val() - 1;
                 run(gen);
             }
             //$("#playContral").val("播放暂停").show().addClass("red_start");
@@ -167,11 +239,11 @@
             //isPlayParm false 不放
             if (isPlayParm === false) {
                 isPlay = false;
-                $("#playContral").val("播放继续").addClass("bule_start").removeClass("red_start");
+                $("#playContral").val("继续").addClass("bule_start").removeClass("red_start");
             }
             if (isPlayParm === true) {
                 isPlay = true;
-                $("#playContral").val("播放暂停").removeClass("bule_start").addClass("red_start");
+                $("#playContral").val("暂停").removeClass("bule_start").addClass("red_start");
                 run(gen);
             }
         }
@@ -181,12 +253,14 @@
         <div class="tool_box">
             <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />-->
             <div style="display:inline-block;">
-                间隔:<input type="number" id="interval" style="width: 30px;" value="2" />
+                间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
             </div>
             序号:<input type="number" id="no" style="width: 30px;" value="1" />
             <!--<input type="button" id="play" class="bule_start" value="播放" onclick="speakAll()" />-->
-            <input type="button" id="playContral" class="bule_start" value="开始播放" onclick="speakAll()" />
-            <input type="button" id="audioContral" class="bule_start" value="显示语音" onclick="audioShow()" />
+            <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
+            <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
+            <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
+            <input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />
         </div>
         <!--语法条目-->
         <div id="grammars_box">
@@ -249,42 +323,31 @@
             tab-size: 4;
         }
 
+        ul li {
+            list-style-type: none;
+        }
+
+        div li {
+            list-style-type: none;
+        }
+
         #grammars_box {
-            margin-top: 30px;
+            margin-top: 35px;
         }
 
-        #playContral {
-            width: 65px;
-            height: 30px;
-            border: none;
-            border-radius: 8px;
-            text-align: center;
-            color: white;
+
+        .B_Box {
+            margin-left: 12px;
         }
 
-        #audioContral {
-            width: 65px;
-            height: 30px;
-            border: none;
-            border-radius: 8px;
-            text-align: center;
-            color: white;
-            float:right;
-            margin-right:8px;
-        }
-
-        #play {
-            width: 40px;
-            height: 30px;
-            border: none;
-            border-radius: 8px;
-            text-align: center;
-            color: white;
+        .C_Box {
+            margin-left: 18px;
         }
 
         .A_grammars {
             font-size: 1.5rem;
-            border-bottom: 2px dashed blue;
+            border: 2px dashed blue;
+            background-color: #dde4f9;
         }
 
         .B_definitions {
@@ -306,20 +369,76 @@
             z-index: 1000; /* 确保元素在其他内容之上 */
         }
 
+        .grammar_no_box {
+            display: inline-block;
+            text-align: center;
+            width: 15px;
+            color: #0000ff;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 10px;
+            margin-left: 10px;
+        }
+
+        .grammar_lv_box {
+            float: right;
+            margin-right: 10px;
+        }
+
+        .definitions_no_box {
+            margin-left: 10px;
+        }
+
         .no_box {
-            border: 1px solid #808080;
+            border: 1px solid #dde4f9;
             border-radius: 10px;
             display: inline-block;
             text-align: center;
             width: 15px;
+            /*#55b7ff*/
+            background-color: #dde4f9;
+            color: #000000;
+            margin-right: 10px;
         }
 
         .active {
             background-color: gold;
         }
 
+        /*#playContral {
+            width: 65px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        #audioContral {
+            width: 65px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            float: right;
+            margin-right: 8px;
+        }
+
+        #play {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }*/
+
         .bule_start {
             background-color: cornflowerblue;
+            color: white;
+            text-align: center;
+            border-color: cornflowerblue;
         }
 
         .red_start {

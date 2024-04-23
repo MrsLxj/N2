@@ -125,11 +125,10 @@
                 return false;
             }
             var audio = document.getElementById('audio' + eid);
-            audio.load();
-            $('#msg').html(document.getElementById('audio' + eid).readyState + 'duration:' + audio.duration);
+            audio.play();
             // 检查音频是否已暂停
             if (audio.paused) {
-                $('#msg').html('audio' + eid + 'paused');
+                $('#msg').html(audio.readyState + 'duration:' + audio.duration);
                 audio.play();
             } else {
                 $('#msg').html('playing');

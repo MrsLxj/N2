@@ -125,12 +125,12 @@
                 return false;
             }
             var audio = document.getElementById('audio' + eid);
+            audio.load();
             audio.addEventListener('canplaythrough', function () {
                 //console.log('音频文件已加载完毕，可以无缝播放至结尾。');
                 $('#msg').html('audio' + eid + ':音频文件已加载完毕');
+                audio.play();
             });
-            audio.load();
-            audio.play();
             // 检查音频是否已暂停
             if (audio.paused) {
                 $('#msg').html('audio' + eid + 'paused');
@@ -286,8 +286,8 @@
             <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
             <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
             <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
-            <div id="msg"></div>
             <input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />
+            <div id="msg"></div>
         </div>
         <!--语法条目-->
         <div id="grammars_box">

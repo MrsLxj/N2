@@ -55,7 +55,7 @@
                         ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') >" + eitem.Text + "</span>";
                         /*  ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";     */
                         var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + eitem.Text;
-                        ehtml += "<audio controls class='audio' src='" + link + "' preload='auto' id='audio" + eitem.Eid + "' style='display:none;height:12px;line-height:12px;'>";
+                        ehtml += "<audio controls='controls' class='audio_box' src='" + link + "' preload='auto' id='audio" + eitem.Eid + "'>";
                         //ehtml += "<source />";
                         ehtml += "</audio>";
                         ehtml += "</li>";
@@ -126,23 +126,22 @@
             }
             var audio = document.getElementById('audio' + eid);
             audio.play();
-            // 检查音频是否已暂停
+            //// 检查音频是否已暂停
             if (audio.paused) {
                 $('#msg').html(audio.readyState + 'duration:' + audio.duration);
                 audio.play();
             } else {
                 $('#msg').html('playing');
             }
-            // 检查音频是否在播放过程中遇到错误
-            if (audio.error) {
-                $('msg').html(audio.error);
-            }
-            //// 获取并输出当前播放的时间
-            //console.log('Current time:', audio.currentTime);
-
-            //// 获取并输出音频总时长
-            //console.log('Duration:', audio.duration);
-
+            audio.addEventListener('canplaythrough', function () {
+                // 当音频足够的数据以确保播放无需缓冲时执行
+                audio.play().catch(function (error) {
+                    $('#msg').html('播放失败:', error);
+                });
+            }, false);
+            audio.addEventListener('error', function () {
+                $('#msg').html('音频播放失败:', audio.error);
+            }, false);
             //// 设置音频播放速度
             //audio.playbackRate = 1.5;
 
@@ -153,39 +152,11 @@
         //延时
         function asyncThunk(Text, Eid, i, arrayPlay) {
             return function (callBack) {
-                var miao = 3;
+                var miao = 0;
                 if (i === 0) miao = 1;
                 if (i > 0) {
-                    if (arrayPlay[i - 1].Text.length >= 10) {
-                        miao = 4;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 20) {
-                        miao = 5;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 30) {
-                        miao = 6;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 40) {
-                        miao = 7;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 50) {
-                        miao = 8;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 60) {
-                        miao = 9;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 70) {
-                        miao = 10;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 80) {
-                        miao = 11;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 90) {
-                        miao = 12;
-                    }
-                    if (arrayPlay[i - 1].Text.length >= 100) {
-                        miao = 13;
-                    }
+                    var audio = document.getElementById('audio' + arrayPlay[i - 1].Eid);
+                    miao = audio.duration + 1;
                 }
                 setTimeout(() => callBack(speak(Text, Eid, i)), (miao * 1000 + $('#interval').val() * 1000));
             };
@@ -459,6 +430,11 @@
 
         .red_start {
             background-color: crimson;
+        }
+
+        .audio_box {
+            height: 12px;
+            line-height: 12px;
         }
     </style>
 </body>

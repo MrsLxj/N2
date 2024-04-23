@@ -132,7 +132,8 @@
 
             // 检查音频是否已暂停
             if (audio.paused) {
-                $('#msg').html('paused');
+                $('#msg').html('audio' + eid + 'paused');
+                audio.play();
             } else {
                 $('#msg').html('playing');
             }

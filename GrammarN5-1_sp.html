@@ -128,20 +128,12 @@
             audio.play();
             //// 检查音频是否已暂停
             if (audio.paused) {
-                $('#msg').html(audio.readyState + 'duration:' + audio.duration);
+                $('#msg').html(audio.muted);
+                audio.muted = false;
                 audio.play();
             } else {
                 $('#msg').html('playing');
             }
-            audio.addEventListener('canplaythrough', function () {
-                // 当音频足够的数据以确保播放无需缓冲时执行
-                audio.play().catch(function (error) {
-                    $('#msg').html('播放失败:', error);
-                });
-            }, false);
-            audio.addEventListener('error', function () {
-                $('#msg').html('音频播放失败:', audio.error);
-            }, false);
             //// 设置音频播放速度
             //audio.playbackRate = 1.5;
 
@@ -173,7 +165,7 @@
                     var elementTop = elementOffset.top;
                     const targetElement = document.querySelector("#target");
                     window.scroll({
-                        top: elementTop - 150,
+                        top: elementTop - 200,
                         behavior: 'smooth'
                     });
                 }
@@ -246,7 +238,7 @@
             <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
             <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
             <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
-            <input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />
+            <!--<input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />-->
             <div id="msg" style="display:inline-block;"></div>
         </div>
         <!--语法条目-->

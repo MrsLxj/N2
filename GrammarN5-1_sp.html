@@ -125,26 +125,15 @@
                 return false;
             }
             var audio = document.getElementById('audio' + eid);
-            $('#msg').html(document.getElementById('audio' + eid).readyState);
-            audio.addEventListener('canplaythrough', function () {
-                //console.log('音频文件已加载完毕，可以无缝播放至结尾。');
-                $('#msg').html('audio' + eid + ':音频文件已加载完毕');
-                audio.play();
-            });
+            audio.load();
+            $('#msg').html(document.getElementById('audio' + eid).readyState + 'duration:' + audio.duration);
             // 检查音频是否已暂停
             if (audio.paused) {
                 $('#msg').html('audio' + eid + 'paused');
-                audio.load();
                 audio.play();
             } else {
                 $('#msg').html('playing');
             }
-
-            // 检查音频是否已播放完毕
-            if (audio.ended) {
-                $('#msg').html('ended');
-            }
-
             // 检查音频是否在播放过程中遇到错误
             if (audio.error) {
                 $('msg').html(audio.error);

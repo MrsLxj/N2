@@ -152,17 +152,17 @@
                         if (arrayPlay[i - 1].Text.length >= 10) {
                             miao = 4;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 20) {
+                        if (arrayPlay[i - 1].Text.length >= 17) {
                             miao = 5;
                         }
                         if (arrayPlay[i - 1].Text.length >= 25) {
                             miao = 6;
                         }
                         if (arrayPlay[i - 1].Text.length >= 30) {
-                            miao = 7;
+                            miao = 8;
                         }
                         if (arrayPlay[i - 1].Text.length >= 40) {
-                            miao = 8;
+                            miao = 9;
                         }
                     } else if ($('#sudu').val() === '1.5' || $('#sudu').val() === '1.25') {
                         if (arrayPlay[i - 1].Text.length >= 10) {
@@ -183,7 +183,7 @@
                             miao = 6;
                         }
                     }
-                    //console.log(arrayPlay[i - 1].Text.length, miao, 'miao')
+                    console.log(arrayPlay[i - 1].Text.length, miao, 'miao')
                 }
                 setTimeout(() => callBack(speak(Text, Eid)), (miao * 1000 + $('#interval').val() * 1000));
             };
@@ -194,6 +194,8 @@
             if (playIndex > 0)
                 arrayPlay = examples.filter(x => x.Eid >= examples[playIndex].Eid);
             else arrayPlay = examples;
+            console.log(arrayPlay, 'arrayPlay');
+            console.log(playIndex, 'playIndex');
             for (var i = 0; i < arrayPlay.length; i++) {
                 if (i > 0) {
                     var elementOffset = $('#' + examples[examples.findIndex(x => x.Eid === arrayPlay[i].Eid)].Eid).offset();
@@ -264,19 +266,27 @@
     </script>
     <div>
         <div class="tool_box">
-            <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />-->
-            <div style="display:inline-block;">
+            <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />  <input type="number" id="sudu" style="width: 30px;" value="1.25" />-->
+            <div style="display: inline-block; margin-top: 8px; margin-left: 8px; ">
+                序号:<input type="number" id="no" style="width: 30px;" value="1" />
                 间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
-                速度:<input type="number" id="sudu" style="width: 30px;" value="1.25" />
-                音量:<input type="number" id="liang" style="width: 30px;display:none;" value="1" />
+                速度:
+                <select id="sudu" style="width: 50px;" value="1">
+                    <option value="1">1</option>
+                    <option value="1.25">1.25</option>
+                    <option value="1.5">1.5</option>
+                    <option value="2">2</option>
+                    <option value="2.5">2.5</option>
+                    <option value="0.75">0.75</option>
+                </select>
+                <input type="number" id="liang" style="width: 30px;display:none;" value="1" />
             </div>
-            序号:<input type="number" id="no" style="width: 30px;" value="1" />
-            <!--<input type="button" id="play" class="bule_start" value="播放" onclick="speakAll()" />-->
-            <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
-            <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
-            <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
-            <!--<input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />-->
-            <div id="msg" style="display:inline-block;"></div>
+            <div style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px;">
+                <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
+                <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
+                <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
+            </div>
+            <!--<div id="msg" style="display:inline-block;"></div>-->
         </div>
         <!--语法条目-->
         <div id="grammars_box">
@@ -349,7 +359,7 @@
         }
 
         #grammars_box {
-            margin-top: 35px;
+            margin-top: 70px;
         }
 
 
@@ -460,12 +470,13 @@
 
         .red_start {
             background-color: crimson;
+            border-color: crimson;
         }
 
         .audio_box {
             height: 12px;
             line-height: 12px;
-            display:none;
+            display: none;
         }
     </style>
 </body>

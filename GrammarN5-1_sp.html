@@ -75,9 +75,6 @@
             var audio = document.getElementById('audio' + eid);
             audio.load();
             audio.play();
-            //setTimeoutIndex = setInterval(function () {
-            //    audio.play();
-            //}, time * 3000);
             //赋值序号
             var no = examples.findIndex(x => x.Eid === eid);
             $("#no").val(no + 1);
@@ -130,6 +127,36 @@
             var audio = document.getElementById('audio' + eid);
             audio.load();
             audio.play();
+            // 假设你的HTML中有一个audio元素，如：<audio id="myAudio" src="song.mp3"></audio>
+
+
+            // 检查音频是否已暂停
+            if (audio.paused) {
+                $('#msg').html('paused');
+            } else {
+                $('#msg').html('playing');
+            }
+
+            // 检查音频是否已播放完毕
+            if (audio.ended) {
+                $('#msg').html('ended');
+            }
+
+            // 检查音频是否在播放过程中遇到错误
+            if (audio.error) {
+                $('msg').html(audio.error);
+            }
+            //// 获取并输出当前播放的时间
+            //console.log('Current time:', audio.currentTime);
+
+            //// 获取并输出音频总时长
+            //console.log('Duration:', audio.duration);
+
+            //// 设置音频播放速度
+            //audio.playbackRate = 1.5;
+
+            //// 设置音频音量
+            //audio.volume = 0.5;
             return true;
         }
         //延时
@@ -257,7 +284,8 @@
             <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
             <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
             <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
-            <input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />
+            <div id="msg"></div>
+            <!--<input type="button" id="audioContral" class="bule_start" value="语音开" onclick="audioShow()" />-->
         </div>
         <!--语法条目-->
         <div id="grammars_box">

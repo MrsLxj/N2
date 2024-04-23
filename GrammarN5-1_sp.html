@@ -118,6 +118,11 @@
         var playIndex = 0;
         //是读还是不读
         var isPlay = false;
+        //$('#' + 'audio' + eid).click(function () {
+        //    alert('按钮被点击了！');
+        //    var audio = document.getElementById('audio' + eid);
+        //    audio.play(); muted
+        //});
         //读
         function speak(text, eid, i) {
             if (!isPlay) {
@@ -126,14 +131,14 @@
             }
             var audio = document.getElementById('audio' + eid);
             audio.play();
-            //// 检查音频是否已暂停
-            if (audio.paused) {
-                $('#msg').html(audio.muted);
-                audio.muted = false;
-                audio.play();
-            } else {
-                $('#msg').html('playing');
-            }
+            ////// 检查音频是否已暂停
+            //if (audio.paused) {
+            //    $('#msg').html(audio.muted);
+            //    audio.muted = false;
+            //    audio.play();
+            //} else {
+            //    $('#msg').html('playing');
+            //}
             //// 设置音频播放速度
             //audio.playbackRate = 1.5;
 

@@ -52,7 +52,7 @@
                         ehtml += "<li id=" + eitem.Eid + " class='example_item'>";
                         //console.log(examples.findIndex(x => x.Eid === eitem.Eid), eitem.Eid, 'examples.findIndex(x => x.Eid === eitem.Eid)')
                         ehtml += "<span class='no_box'>" + (examples.findIndex(x => x.Eid === eitem.Eid) + 1) + "</span>";
-                        ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') >" + eitem.Text + "</span>";
+                        ehtml += "<span onclick=speak('" + eitem.Text + "','" + eitem.Eid + "') >" + eitem.Text + "</span>";
                         /*  ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eitem.Eid + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";     */
                         //ehtml += "<audio controls='controls' class='audio_box' src='" + link + "' preload='auto' id='audio" + eitem.Eid + "'>";
                         //ehtml += "</audio>";
@@ -66,17 +66,17 @@
             })
             $gbox.append(html);
         })
-        function speakItem(text, eid) {
-            //设置当前读的例句高亮
-            $('.example_item').removeClass("active");
-            $('#' + eid).addClass("active");
-            var audio = document.getElementById('audio' + eid);
-            audio.load();
-            audio.play();
-            //赋值序号
-            var no = examples.findIndex(x => x.Eid === eid);
-            $("#no").val(no + 1);
-        }
+        //function speakItem(text, eid) {
+        //    //设置当前读的例句高亮
+        //    $('.example_item').removeClass("active");
+        //    $('#' + eid).addClass("active");
+        //    var audio = document.getElementById('audio' + eid);
+        //    audio.load();
+        //    audio.play();
+        //    //赋值序号
+        //    var no = examples.findIndex(x => x.Eid === eid);
+        //    $("#no").val(no + 1);
+        //}
         function audioShow() {
             if ($('#audioContral').val() === '语音开') {
                 $('.audio').show();
@@ -117,7 +117,7 @@
         //是读还是不读
         var isPlay = false;
         //读
-        function speak(text, eid, i) {
+        function speak(text, eid) {
             if (!isPlay) {
                 playIndex = examples.findIndex(x => x.Eid === eid);
                 return false;
@@ -128,30 +128,15 @@
             var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
             $('#audio').attr('src', link);
             audio.load();
-            console.log('link。', link);
+            audio.playbackRate = $('#sudu').val();
+            audio.volume = $('#liang').val();
             function canPlay() {
                 if (audio.readyState === 4) {
-                    console.log('音频已准备好播放。');
                     // 在这里可以执行播放音频的操作
                     audio.play();
                 }
             }
-
-            // 绑定canplaythrough事件监听器，当音频可以无间断播放时触发
             audio.addEventListener('canplaythrough', canPlay);
-            ////// 检查音频是否已暂停
-            //if (audio.paused) {
-            //    $('#msg').html(audio.muted);
-            //    audio.muted = false;
-            //    audio.play();
-            //} else {
-            //    $('#msg').html('playing');
-            //}
-            //// 设置音频播放速度
-            //audio.playbackRate = 1.5;
-
-            //// 设置音频音量
-            //audio.volume = 0.5;
             return true;
         }
         //延时
@@ -162,9 +147,45 @@
                 if (i > 0) {
                     //var audio = document.getElementById('audio' + arrayPlay[i - 1].Eid);
                     //miao = audio.duration + 1;
-                    miao = 5;
+                    if ($('#sudu').val() === "1") {
+                        miao = 4;
+                        if (arrayPlay[i - 1].Text.length >= 10) {
+                            miao = 4;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 20) {
+                            miao = 5;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 25) {
+                            miao = 6;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 7;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 40) {
+                            miao = 8;
+                        }
+                    } else if ($('#sudu').val() === '1.5' || $('#sudu').val() === '1.25') {
+                        if (arrayPlay[i - 1].Text.length >= 10) {
+                            miao = 3;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 20) {
+                            miao = 4;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 5;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 40) {
+                            miao = 6;
+                        }
+                    }
+                    if ($('#sudu').val() === '1.25') {
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 6;
+                        }
+                    }
+                    //console.log(arrayPlay[i - 1].Text.length, miao, 'miao')
                 }
-                setTimeout(() => callBack(speak(Text, Eid, i)), (miao * 1000 + $('#interval').val() * 1000));
+                setTimeout(() => callBack(speak(Text, Eid)), (miao * 1000 + $('#interval').val() * 1000));
             };
         }
         //循环读
@@ -246,6 +267,8 @@
             <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />-->
             <div style="display:inline-block;">
                 间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
+                速度:<input type="number" id="sudu" style="width: 30px;" value="1.25" />
+                音量:<input type="number" id="liang" style="width: 30px;display:none;" value="1" />
             </div>
             序号:<input type="number" id="no" style="width: 30px;" value="1" />
             <!--<input type="button" id="play" class="bule_start" value="播放" onclick="speakAll()" />-->
@@ -442,6 +465,7 @@
         .audio_box {
             height: 12px;
             line-height: 12px;
+            display:none;
         }
     </style>
 </body>

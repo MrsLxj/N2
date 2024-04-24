@@ -17,7 +17,8 @@
     { "NLv": 'N5', "Nid": 15, "LNid": '', "Text": "の" },
     { "NLv": 'N5', "Nid": 16, "LNid": '', "Text": "へ" },
     { "NLv": 'N5', "Nid": 18, "LNid": '', "Text": "を" },
-
+    { "NLv": 'N5', "Nid": 19, "LNid": '', "Text": "や、や、など" },
+    { "NLv": 'N5', "Nid": 20, "LNid": '', "Text": "か" },
 
 
 

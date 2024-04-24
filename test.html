@@ -1,22 +1,63 @@
-﻿<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>日语文字转语音播放</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>for_word</title>
 </head>
+
 <body>
- 
-<p id="text">こんにちは、世界！私は中国人です</p>
-<button onclick="speakJapanese()">播放日语</button>
- 
+<div class="main">
+    <h5>循环播放单词 - 有道英式发言</h5>
+    <div>
+        单词: <input type="text" name="word" value="この仕事は日本語ができなくても大丈夫です" placeholder="この仕事は日本語ができなくても大丈夫です">
+    </div>
+    <div>
+        播放间隔 秒数:<input type="text" name="time_s" value="2" placeholder="秒数">
+    </div>
+
+    <button id="toggle" play="0">播放</button>
+    <div class="audio-box">
+        <audio controls id="audio">
+            <source id="source" src="https://dict.youdao.com/dictvoice?le=jap&type=3&audio=この仕事は日本語ができなくても大丈夫です">
+        </audio>
+    </div>
+
+</div>
+
 <script>
-function speakJapanese() {
-    const text = document.getElementById('text').textContent;
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.lang = 'ja-JP'; // 设置语言为日语
-    window.speechSynthesis.speak(msg);
+var source_element = document.getElementById('source');
+var toggle_element = document.getElementById('toggle');
+var audio = document.getElementById('audio');
+var word_element = document.querySelector("[name='word']");
+var time_element = document.querySelector("[name='time_s']");
+var url = 'https://dict.youdao.com/dictvoice?type=jap&type=3&audio=#{audio}';
+var setTimeoutIndex = null;
+toggle_element.onclick = function () {
+    var word = word_element.value;
+    if (!word) {
+        alert('单词不可为空！！！');
+        return ;
+    }
+    var time = time_element.value;
+
+    var play = !Number(this.getAttribute('play'));
+    this.setAttribute('play', Number(play));
+    this.innerText = play ? '播发中':'点击播放';
+    if (play) {
+        source_element.setAttribute('src', url.replace('#{audio}', word));
+        audio.load();
+        audio.play();
+        setTimeoutIndex = setInterval(function () {
+            audio.play();
+        }, time * 3000);
+    }else{
+        clearInterval(setTimeoutIndex);
+        audio.pause();
+    }
 }
 </script>
- 
 </body>
 </html>

@@ -46,6 +46,8 @@ var examples = [
     { "Nid": 16, "Did": 39, "Eid": 44, "Text": "吉田さんは来月中国へ行きます" },
     { "Nid": 18, "Did": 41, "Eid": 45, "Text": "李さんは毎日コーヒーを飲みます" },
     { "Nid": 18, "Did": 42, "Eid": 46, "Text": "李さんは毎日7時に家を出ます" },
+    { "Nid": 19, "Did": 43, "Eid": 47, "Text": "日曜日に掃除や洗濯をします" },
+    { "Nid": 20, "Did": 44, "Eid": 48, "Text": "今日か明日、一緒にご飯を食べませんか" },
 ];
 
 function getExamplesData() {

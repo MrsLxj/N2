@@ -43,6 +43,8 @@ var definitions = [
     { "Nid": 17, "Did": 40, "Text": "时间，空间的终点" },
     { "Nid": 18, "Did": 41, "Text": "动作的对象" },
     { "Nid": 18, "Did": 42, "Text": "经过、离开的地点" },
+    { "Nid": 19, "Did": 43, "Text": "和……，或……表代表性事物的部分列举，暗示还有其他" },
+    { "Nid": 20, "Did": 44, "Text": "从2个或3个事物中选取一个，表示选择" },
 ];
 function getDefinitionsData() {
     return definitions;

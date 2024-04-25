@@ -40,6 +40,11 @@
             if (grammars === undefined) {
                 return;
             }
+            var topno = $('#topno').val();
+            var endno = $('#endno').val();
+            if (topno > 0) {
+                grammars = grammars.slice(topno, (parseInt(topno) + parseInt(endno)));
+            }
             var gIndex = 0;
             var eIndex = 0;
             //词条
@@ -136,13 +141,11 @@
         function Show(type) {
             if (type === '词条') {
                 if ($('#dContral').val() === '解释开') {
-                    $('.B_definitions').show();
+                    $('.definitions_no_box').show();
                     $('#dContral').val('解释关');
                 } else {
-                    $('.B_definitions').hide();
+                    $('.definitions_no_box').hide();
                     $('#dContral').val('解释开');
-                    //$('.C_Box').hide();
-                    //$('#eContral').val('例句开');
                 }
             } else if (type === '例句') {
                 if ($('#eContral').val() === '例句开') {
@@ -154,12 +157,24 @@
                     $('.C_Box').hide();
                     $('#eContral').val('例句开');
                 }
+            } else if (type === '接续') {
+                if ($('#jjContral').val() === '接续开') {
+                    $('.jiexu_box').show();
+                    $('#jjContral').val('接续关');
+                } else {
+                    $('.jiexu_box').hide();
+                    $('#jjContral').val('接续开');
+                }
             }
         }
         function showBox(name, status) {
             //definitions_no_box
             //jiexu_box
-            $('.C_Box').show();
+            if (status) {
+                $('.' + name).show();
+            } else {
+                $('.' + name).hide();
+            }
         }
     </script>
     <script>
@@ -178,6 +193,7 @@
                 playIndex = i;
                 return false;
             }
+
             var audio = document.getElementById('audio');
             audio.play();
             audio.pause();
@@ -309,12 +325,18 @@
                 run(gen);
             }
         }
+        function add(i) {
+            $("endno").val($("topno").val() + i);
+        }
         //-------------------------播放方法结束-------------------------
     </script>
     <div>
         <div class="tool_box">
+
             <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />  <input type="number" id="sudu" style="width: 30px;" value="1.25" />-->
             <div style="display: inline-block; margin-top: 8px; margin-left: 8px; ">
+                <!--开始:<input type="number" id="topno" style="width: 30px;" value="1" />
+                条数:<input type="number" id="endno" style="width: 40px;" value="30" />-->
                 序号:<input type="number" id="no" style="width: 30px;" value="1" />
                 间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
                 速度:
@@ -342,6 +364,7 @@
                 <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
                 <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
                 <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
+                <input type="button" id="jjContral" class="bule_start" value="接续关" onclick="Show('接续')" />
             </div>
             <!--<div id="msg" style="display:inline-block;"></div>-->
         </div>

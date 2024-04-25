@@ -7,12 +7,25 @@
     <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
     <script src="js/grammarData.js"></script>
     <script src="js/definitions.js"></script>
-    <script src="js/examples.js"></script>
+    <script src="js/examples.js?v=1"></script>
     <!--<script src="jq.js"></script>-->
 </head>
 <body>
     <script>
+        $(document).ready(function () {
+            $('.anchor').click(function () {
+                // 获取href的值，去掉'#'
+                var target = $(this).attr('href');
 
+                // 使用animate()和scrollTop()滚动到对应的锚点
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top + 200
+                }, 1000); // 1000毫秒内平滑滚动
+
+                // 阻止默认行为，防止页面跳转
+                return false;
+            });
+        });
         function loadData() {
             isPlay = false;
             $("#playContral").val("播放").addClass("bule_start").removeClass("red_start");
@@ -22,19 +35,25 @@
             var definitions = getDefinitionsData();
             var examples = getExamplesData($('#NLv').val(), $('#isUp:checked').val());
             var html = "";
-            var enums = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'ｼ', 'ス', 'セ', 'ソ'];
+            //var enums = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'ｼ', 'ス', 'セ', 'ソ'];
+            var enums = ['■'];
             if (grammars === undefined) {
                 return;
             }
+            var gIndex = 0;
             var eIndex = 0;
             //词条
             grammars.forEach(item => {
-                html += "<p class='A_grammars' data-id=" + item.Nid + ">";
-                html += "<span class='grammar_no_box'>" + (grammars.findIndex(x => x.Nid === item.Nid) + 1) + "</span>";
-                html += "<a >";
+                gIndex++;
+                html += "<p class='A_grammars' id=" + 'N' + item.Nid + ">";
+                //html += "<span class='grammar_no_box'>" + (grammars.findIndex(x => x.Nid === item.Nid) + 1) + "</span>";
+                //html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
+                html += "<a class='grammar_box'>";
+                html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += item.Text;
                 html += "</a>";
-                html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
+                if (item.LNid !== '')
+                    html += "<a href='#" + 'N' + (parseInt(item.LNid) - 1) + "' class='anchor'>" + item.LNid + "</a>";
                 html += "</p>";
 
                 //解释
@@ -44,8 +63,11 @@
                 get_definitions.forEach(ditem => {
                     var dhtml = "<div class='B_definitions'>";
                     dhtml += "<li data-id=" + ditem.Did + ">";
-                    dhtml += "<span class='definitions_no_box'>" + enums[dindex] + ": </span>";
+                    dhtml += "<div class='definitions_no_box'>";
+                    dhtml += "<span >" + enums[0] + " </span>";
                     dhtml += "<span>" + ditem.Text + "</span>";
+                    dhtml += "<span class='noteA_box'>" + ditem.noteA + "</span>";
+                    dhtml += "</div>";
                     dhtml += "</li>";
                     dhtml += "</div>";
                     html += dhtml;
@@ -68,6 +90,7 @@
                         ehtml += "</div>";
                         html += ehtml;
                     })
+                    html += "<span class='jiexu_box'>" + ditem.jiexu + "</span>";
                     html += "</div>";
                     dindex++;
                 })
@@ -76,7 +99,7 @@
             $gbox.html(html);
         }
         function speakItem(text, index) {
-            console.log(index,'index')
+            console.log(index, 'index')
             //设置当前读的例句高亮
             $('.example_item').removeClass("active");
             $('#' + index).addClass("active");
@@ -132,6 +155,11 @@
                     $('#eContral').val('例句开');
                 }
             }
+        }
+        function showBox(name, status) {
+            //definitions_no_box
+            //jiexu_box
+            $('.C_Box').show();
         }
     </script>
     <script>
@@ -439,13 +467,32 @@
             margin-left: 10px;
         }
 
+        .grammar_box {
+            margin-right: 10px;
+        }
+
         .grammar_lv_box {
             float: right;
             margin-right: 10px;
         }
 
         .definitions_no_box {
+            color: grey;
+            font-size: 13px;
             margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        .noteA_box {
+            color: brown;
+        }
+
+        .jiexu_box {
+            display: block;
+            font-size: 10px;
+            margin-left: 28px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
         .no_box {

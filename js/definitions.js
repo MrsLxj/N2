@@ -1,4 +1,4 @@
-﻿
+
 var definitions = [
     { "NLv": 'N2', "Nid": 1, "Did": 1, "Text": "……时候", "jiexu": "N＋の/Vる・Vた＋際（に）～際（は）", "noteA": "" },
     { "NLv": 'N2', "Nid": 2, "Did": 2, "Text": "值此之际……", "jiexu": "N/Vる＋に際してに・～にあたって", "noteA": "【积极】" },

@@ -9,55 +9,69 @@
 </head>
 
 <body>
-<div class="main">
-    <h5>循环播放单词 - 有道英式发言</h5>
-    <div>
-        单词: <input type="text" name="word" value="この仕事は日本語ができなくても大丈夫です" placeholder="この仕事は日本語ができなくても大丈夫です">
+    <div class="main">
+        <h5>循环播放单词 - 有道英式发言</h5>
+        <div>
+            单词: <input type="text" name="word" value="この仕事は日本語ができなくても大丈夫です" placeholder="この仕事は日本語ができなくても大丈夫です">
+        </div>
+        <div>
+            播放间隔 秒数:<input type="text" name="time_s" value="2" placeholder="秒数">
+        </div>
+
+        <button id="toggle" play="0">播放</button>
+        <div class="audio-box">
+            <audio controls id="audio">
+                <source id="source" src="https://dict.youdao.com/dictvoice?le=jap&type=3&audio=この仕事は日本語ができなくても大丈夫です">
+            </audio>
+        </div>
+
     </div>
-    <div>
-        播放间隔 秒数:<input type="text" name="time_s" value="2" placeholder="秒数">
-    </div>
 
-    <button id="toggle" play="0">播放</button>
-    <div class="audio-box">
-        <audio controls id="audio">
-            <source id="source" src="https://dict.youdao.com/dictvoice?le=jap&type=3&audio=この仕事は日本語ができなくても大丈夫です">
-        </audio>
-    </div>
+    <script>
+        const data = { name: 'John', age: 30 };
+        const jsonData = JSON.stringify(data);
 
-</div>
+        // 创建Blob对象并写入JSON数据
+        const blob = new Blob([jsonData], { type: 'application/json' });
 
-<script>
-var source_element = document.getElementById('source');
-var toggle_element = document.getElementById('toggle');
-var audio = document.getElementById('audio');
-var word_element = document.querySelector("[name='word']");
-var time_element = document.querySelector("[name='time_s']");
-var url = 'https://dict.youdao.com/dictvoice?type=jap&type=3&audio=#{audio}';
-var setTimeoutIndex = null;
-toggle_element.onclick = function () {
-    var word = word_element.value;
-    if (!word) {
-        alert('单词不可为空！！！');
-        return ;
-    }
-    var time = time_element.value;
+        // 创建下载链接并设置相关属性
+        const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = 'data.json';
 
-    var play = !Number(this.getAttribute('play'));
-    this.setAttribute('play', Number(play));
-    this.innerText = play ? '播发中':'点击播放';
-    if (play) {
-        source_element.setAttribute('src', url.replace('#{audio}', word));
-        audio.load();
-        audio.play();
-        setTimeoutIndex = setInterval(function () {
-            audio.play();
-        }, time * 3000);
-    }else{
-        clearInterval(setTimeoutIndex);
-        audio.pause();
-    }
-}
-</script>
+        // 模拟点击下载链接
+        downloadLink.click();
+
+        var source_element = document.getElementById('source');
+        var toggle_element = document.getElementById('toggle');
+        var audio = document.getElementById('audio');
+        var word_element = document.querySelector("[name='word']");
+        var time_element = document.querySelector("[name='time_s']");
+        var url = 'https://dict.youdao.com/dictvoice?type=jap&type=3&audio=#{audio}';
+        var setTimeoutIndex = null;
+        toggle_element.onclick = function () {
+            var word = word_element.value;
+            if (!word) {
+                alert('单词不可为空！！！');
+                return;
+            }
+            var time = time_element.value;
+
+            var play = !Number(this.getAttribute('play'));
+            this.setAttribute('play', Number(play));
+            this.innerText = play ? '播发中' : '点击播放';
+            if (play) {
+                source_element.setAttribute('src', url.replace('#{audio}', word));
+                audio.load();
+                audio.play();
+                setTimeoutIndex = setInterval(function () {
+                    audio.play();
+                }, time * 3000);
+            } else {
+                clearInterval(setTimeoutIndex);
+                audio.pause();
+            }
+        }
+    </script>
 </body>
 </html>

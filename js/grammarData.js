@@ -1,4 +1,4 @@
-﻿var grammars = [
+var grammars = [
     { "NLv": 'N2', "Nid": 1, "LNid": '', "Text": "際（に）～際（は）" },
     { "NLv": 'N2', "Nid": 2, "LNid": '', "Text": "に際してに・～にあたって" },
     { "NLv": 'N2', "Nid": 3, "LNid": '', "Text": "たとたん（に）" },

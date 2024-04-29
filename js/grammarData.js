@@ -159,7 +159,6 @@ var grammars = [
     { "NLv": 'N1', "keLv": "1课", "Nid": 157, "LNid": '', "Text": "に至る" },
     { "NLv": 'N1', "keLv": "1课", "Nid": 158, "LNid": '', "Text": "からして" },
 
-<<<<<<< HEAD
     { "NLv": 'N1', "keLv": "2课", "Nid": 159, "LNid": '', "Text": "に至って" },
     { "NLv": 'N1', "keLv": "2课", "Nid": 160, "LNid": '', "Text": "といえども" },
     { "NLv": 'N1', "keLv": "2课", "Nid": 161, "LNid": '', "Text": "余儀なくされる" },
@@ -226,9 +225,6 @@ var grammars = [
     { "NLv": 'N1', "keLv": "9课", "Nid": 218, "LNid": '', "Text": "にかこつけて" },
     // { "NLv": 'N1', "keLv": "9课", "Nid": 219, "LNid": '', "Text": "" },
 
-
-=======
->>>>>>> 752e234da9c77fa20dda937984a2f4f438b4d156
     // { "NLv": 'N5', "Nid": 1, "LNid": '', "Text": "できる" },
     // { "NLv": 'N5', "Nid": 2, "LNid": '', "Text": "ある" },
     // { "NLv": 'N5', "Nid": 3, "LNid": '', "Text": "いる" },

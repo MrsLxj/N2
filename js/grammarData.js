@@ -223,6 +223,15 @@ var grammars = [
     { "NLv": 'N1', "keLv": "9课", "Nid": 216, "LNid": '', "Text": "といったところだ" },
     { "NLv": 'N1', "keLv": "9课", "Nid": 217, "LNid": '', "Text": "に……できない" },
     { "NLv": 'N1', "keLv": "9课", "Nid": 218, "LNid": '', "Text": "にかこつけて" },
+
+    { "NLv": 'N1', "keLv": "10课", "Nid": 219, "LNid": '', "Text": "ところ(を)" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 220, "LNid": '', "Text": "至り" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 221, "LNid": '', "Text": "をもって・もちまして" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 222, "LNid": '', "Text": "こととて" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 223, "LNid": '', "Text": "たる" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 224, "LNid": '', "Text": "にたえない" },
+    { "NLv": 'N1', "keLv": "10课", "Nid": 225, "LNid": '', "Text": "限りだ" },
+
     // { "NLv": 'N1', "keLv": "9课", "Nid": 219, "LNid": '', "Text": "" },
 
     // { "NLv": 'N5', "Nid": 1, "LNid": '', "Text": "できる" },

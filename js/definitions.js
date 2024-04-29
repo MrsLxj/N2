@@ -162,6 +162,7 @@ var definitions = [
     { "NLv": 'N2', "Nid": 150, "Did": 160, "Text": "举例，含有不耐烦的口气", "jiexu": "", "noteA": "" },
     { "NLv": 'N2', "Nid": 151, "Did": 161, "Text": "相当于「だけ」，比「だけ」更加正式。", "jiexu": "", "noteA": "" },
 
+<<<<<<< HEAD
     
     { "NLv": 'N1', "Nid": 152, "Did": 162, "Text": "接二连三，一连串", "jiexu": "Vる/Vた/N＋を皮切りとして/に（して）", "noteA": "" },
     { "NLv": 'N1', "Nid": 153, "Did": 163, "Text": "因为……特别", "jiexu": "PI＋とあって", "noteA": "" },
@@ -241,6 +242,8 @@ var definitions = [
     { "NLv": 'N1', "Nid": 216, "Did": 230, "Text": "程度或数量大概是那样，表达不够的心情，常和顶多，总算，好歹等一起使用。" , "jiexu": "Vる/N+といったところだ", "noteA": ""},
     { "NLv": 'N1', "Nid": 217, "Did": 231, "Text": "动词相同，出于某种理由或情况，就算想做A也做不了的强烈情绪。" , "jiexu": "Vる＋に＋Vできない", "noteA": ""},
     { "NLv": 'N1', "Nid": 218, "Did": 232, "Text": "把A作为B的借口时，多用于批评别人时。" , "jiexu": "N＋にかこつけて", "noteA": ""},
+=======
+>>>>>>> 752e234da9c77fa20dda937984a2f4f438b4d156
     // { "Nid": 1, "Did": 1, "Text": "可以做到" , "jiexu": "", "noteA": ""},
     // { "Nid": 1, "Did": 2, "Text": "完成了，做完了" , "jiexu": "", "noteA": ""},
     // { "Nid": 2, "Did": 3, "Text": "表示存在" , "jiexu": "", "noteA": ""},

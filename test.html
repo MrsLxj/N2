@@ -24,23 +24,50 @@
                 <source id="source" src="https://dict.youdao.com/dictvoice?le=jap&type=3&audio=この仕事は日本語ができなくても大丈夫です">
             </audio>
         </div>
-
+        <input type="file" class="import-file-btn" />
+        <button id="toggle1" onclick="up">up</button>
     </div>
 
     <script>
-        const data = { name: 'John', age: 30 };
-        const jsonData = JSON.stringify(data);
+        //const data = { name: 'John', age: 30 };
+        //const jsonData = JSON.stringify(data);
 
-        // 创建Blob对象并写入JSON数据
-        const blob = new Blob([jsonData], { type: 'application/json' });
+        //// 创建Blob对象并写入JSON数据
+        //const blob = new Blob([jsonData], { type: 'application/json' });
 
-        // 创建下载链接并设置相关属性
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'data.json';
+        //// 创建下载链接并设置相关属性
+        //const downloadLink = document.createElement('a');
+        //downloadLink.href = URL.createObjectURL(blob);
+        //downloadLink.download = 'data.json';
+
+
+
 
         // 模拟点击下载链接
-        downloadLink.click();
+        //downloadLink.click();
+        function up() {
+            var formData = new FormData();
+            var file = $('.import-file-btn').get(0).files[0];
+            console.log(file, 'file')
+            formData.append('file', file);
+            formData.append('id', id);
+            formData.append('name', 'ssss');
+            const url = `https://api.github.com/repos/${owner}/${repo}/contents/${file.name}?branch=${branch}`;
+            $.ajax({
+                url: url,
+                type: 'put',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                success: function (res) {
+                    console.log(res, 'res')
+                },
+                error: function (XmlHttpRequest, textStatus, errorThrown) { },
+                complete: function () { }
+            });
+        }
 
         var source_element = document.getElementById('source');
         var toggle_element = document.getElementById('toggle');

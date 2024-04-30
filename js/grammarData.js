@@ -221,7 +221,7 @@ var grammars = [
     { "NLv": 'N1', "keLv": "8课", "Nid": 214, "LNid": '', "Text": "に越したことはない" },
     { "NLv": 'N1', "keLv": "9课", "Nid": 215, "LNid": '', "Text": "とはいえ" },
     { "NLv": 'N1', "keLv": "9课", "Nid": 216, "LNid": '', "Text": "といったところだ" },
-    { "NLv": 'N1', "keLv": "9课", "Nid": 217, "LNid": '', "Text": "に……できない" },
+    { "NLv": 'N1', "keLv": "9课", "Nid": 217, "LNid": '237', "Text": "に……ない" },
     { "NLv": 'N1', "keLv": "9课", "Nid": 218, "LNid": '', "Text": "にかこつけて" },
 
     { "NLv": 'N1', "keLv": "10课", "Nid": 219, "LNid": '', "Text": "ところ(を)" },
@@ -231,6 +231,33 @@ var grammars = [
     { "NLv": 'N1', "keLv": "10课", "Nid": 223, "LNid": '', "Text": "たる" },
     { "NLv": 'N1', "keLv": "10课", "Nid": 224, "LNid": '', "Text": "にたえない" },
     { "NLv": 'N1', "keLv": "10课", "Nid": 225, "LNid": '', "Text": "限りだ" },
+    
+    { "NLv": 'N1', "keLv": "11课", "Nid": 226, "LNid": '', "Text": "じゃあるまいし" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 227, "LNid": '', "Text": "んばかり" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 228, "LNid": '', "Text": "たらそれまでだ" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 229, "LNid": '', "Text": "ものを" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 230, "LNid": '', "Text": "ときたら" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 231, "LNid": '199', "Text": "たところで" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 232, "LNid": '', "Text": "ようが" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 233, "LNid": '209', "Text": "なら……で" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 234, "LNid": '', "Text": "にすれば" },
+    { "NLv": 'N1', "keLv": "11课", "Nid": 235, "LNid": '', "Text": "までのことだ" },
+
+    { "NLv": 'N1', "keLv": "12课", "Nid": 236, "LNid": '', "Text": "といったらない" },
+    { "NLv": 'N1', "keLv": "12课", "Nid": 237, "LNid": '217', "Text": "ようにも……ない" },
+    { "NLv": 'N1', "keLv": "12课", "Nid": 238, "LNid": '', "Text": "まくって" },
+    { "NLv": 'N1', "keLv": "12课", "Nid": 239, "LNid": '231/216/234', "Text": "にしたらところで" },
+    { "NLv": 'N1', "keLv": "12课", "Nid": 240, "LNid": '', "Text": "てみせます" },
+
+    { "NLv": 'N1', "keLv": "13课", "Nid": 241, "LNid": '', "Text": "つ……つ" },
+    { "NLv": 'N1', "keLv": "13课", "Nid": 242, "LNid": '', "Text": "ともなく" },
+    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+
+
+
+
 
     // { "NLv": 'N1', "keLv": "9课", "Nid": 219, "LNid": '', "Text": "" },
 

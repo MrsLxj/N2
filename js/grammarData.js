@@ -251,9 +251,9 @@ var grammars = [
 
     { "NLv": 'N1', "keLv": "13课", "Nid": 241, "LNid": '', "Text": "つ……つ" },
     { "NLv": 'N1', "keLv": "13课", "Nid": 242, "LNid": '', "Text": "ともなく" },
-    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
-    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
-    { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+    // { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+    // { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
+    // { "NLv": 'N1', "keLv": "13课", "Nid": 24, "LNid": '', "Text": "" },
 
 
 

@@ -15,19 +15,24 @@
 <body>
     <script>
         $(document).ready(function () {
-            $('.anchor').click(function () {
-                // 获取href的值，去掉'#'
-                var target = $(this).attr('href');
-
-                // 使用animate()和scrollTop()滚动到对应的锚点
-                $('html, body').animate({
-                    scrollTop: $(target).offset().top + 200
-                }, 1000); // 1000毫秒内平滑滚动
-
-                // 阻止默认行为，防止页面跳转
-                return false;
-            });
         });
+
+        function goto(id) {
+            console.log(id, 'id')
+            $('.redClass').removeClass('redClass');
+            $('#N' + (parseInt(id))).addClass('redClass');
+            // 获取href的值，去掉'#'
+            var target = $('#N' + (parseInt(id) - 2));
+            console.log(target, 'target')
+
+            // 使用animate()和scrollTop()滚动到对应的锚点
+            $('html, body').animate({
+                scrollTop: $(target).offset().top
+            }, 1000); // 1000毫秒内平滑滚动
+
+            // 阻止默认行为，防止页面跳转
+            return false;
+        }
         function loadData() {
             isPlay = false;
             $("#playContral").val("播放").addClass("bule_start").removeClass("red_start");
@@ -59,12 +64,26 @@
                 html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += item.Text;
                 html += "</a>";
-                if (item.LNid !== '')
-                    html += "<a href='#" + 'N' + (parseInt(item.LNid) - 1) + "' class='anchor'>" + item.LNid + "</a>";
+                if (item.LNid !== '') {
+                    if (item.LNid.includes("/") === true) {
+                        var array_links = item.LNid.split('/');
+                        var i = 1;
+                        array_links.forEach(item => {
+                            var linkObj = grammars.filter(x => x.Nid === parseInt(item));
+                            console.log(linkObj, 'linkObj')
+                            html += "<a onclick='goto(\"" + (parseInt(item)) + "\")' class='anchor' data-id='N" + item.LNid + "'>[" + linkObj[0].Text + "]</a>   ";
+                            i++;
+                        })
+                    } else {
+                        var linkObj = grammars.filter(x => x.Nid === parseInt(item.LNid));
+                        console.log(linkObj, 'linkObj')
+                        html += "<a onclick='goto(\"" + (parseInt(item.LNid)) + "\")' class='anchor' data-id='N" + item.LNid + "'>[" + linkObj[0].Text + "]</a>";
+                    }
+                }
                 if (item.keLv !== undefined && item.keLv !== '')
                     html += "<a class='grammar_lv_box'>" + item.keLv + "</a>";
                 html += "</p>";
-                html += "<span style='color:red;'>     " + item.Nid + "      </span>";
+                html += "<span class='ShowNid'>     " + item.Nid + "      </span>";
 
                 //解释
                 var get_definitions = definitions.filter(x => x.Nid === item.Nid);
@@ -92,8 +111,7 @@
                         //console.log(examples.findIndex(x => x.Eid === eitem.Eid), eitem.Eid, 'examples.findIndex(x => x.Eid === eitem.Eid)')
                         //(examples.findIndex(x => x.Eid === eitem.Eid) + 1)
                         ehtml += "<span class='no_box'>" + eIndex + "</span>";
-                        //ehtml += "<span style='color:red;'>     " + eitem.Nid + "      </span>";
-                        ehtml += "<span style='color:red;'>     " + eitem.Nid + "      </span>";
+                        ehtml += "<span class='ShowNid'>     " + eitem.Nid + "      </span>";
                         ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eIndex + "') >" + eitem.Text + "</span>";
                         ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eIndex + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"12\" height=\"12\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
                         //ehtml += "<audio controls='controls' class='audio_box' src='" + link + "' preload='auto' id='audio" + eitem.Eid + "'>";
@@ -360,6 +378,15 @@
         function add(i) {
             $("endno").val($("topno").val() + i);
         }
+        function ShowNidF() {
+            if ($("#ShowNidContral").val() === '开') {
+                $('.ShowNid').show();
+                $("#ShowNidContral").val('关');
+            } else {
+                $('.ShowNid').hide();
+                $("#ShowNidContral").val('开');
+            }
+        }
         //-------------------------播放方法结束-------------------------
     </script>
     <div>
@@ -395,6 +422,7 @@
                 <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
                 <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
                 <input type="button" id="jjContral" class="bule_start" value="接续开" onclick="Show('接续')" />
+                <input type="button" id="ShowNidContral" class="bule_start" value="开" onclick="ShowNidF()" />
             </div>
             <!--<div id="msg" style="display:inline-block;"></div>-->
         </div>
@@ -616,6 +644,21 @@
 
         .icon {
             vertical-align: middle;
+        }
+
+        .redClass {
+            background-color: #c76666;
+            border-color: #c76666;
+        }
+
+        .anchor {
+            font-size: 10px;
+            color: #0000ff;
+        }
+
+        .ShowNid {
+            color: red;
+            display: none;
         }
     </style>
 </body>

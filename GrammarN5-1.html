@@ -61,7 +61,11 @@
                 //html += "<span class='grammar_no_box'>" + (grammars.findIndex(x => x.Nid === item.Nid) + 1) + "</span>";
                 //html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
                 html += "<a class='grammar_box'>";
-                html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
+                if (item.keLv !== undefined && item.keLv !== '')
+                    html += "<a class='grammar_lv_box'>" + item.keLv + "</a>";
+                if (item.page !== undefined && item.page !== '')
+                    html += "<a class='grammar_page_box'>" + item.page + "</a>";
+                // html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += item.Text;
                 html += "</a>";
                 if (item.LNid !== '') {
@@ -80,8 +84,6 @@
                         html += "<a onclick='goto(\"" + (parseInt(item.LNid)) + "\")' class='anchor' data-id='N" + item.LNid + "'>[" + linkObj[0].Text + "]</a>";
                     }
                 }
-                if (item.keLv !== undefined && item.keLv !== '')
-                    html += "<a class='grammar_lv_box'>" + item.keLv + "</a>";
                 html += "</p>";
                 html += "<span class='ShowNid'>     " + item.Nid + "      </span>";
 
@@ -556,8 +558,15 @@
         }
 
         .grammar_lv_box {
-            float: right;
+            /* float: right; */
             margin-right: 10px;
+        }
+
+        .grammar_page_box {
+            margin-right: 10px;
+            float: right;
+            color: grey;
+            font-size: 12px;
         }
 
         .definitions_no_box {

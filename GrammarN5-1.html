@@ -18,12 +18,10 @@
         });
 
         function goto(id) {
-            console.log(id, 'id')
             $('.redClass').removeClass('redClass');
             $('#N' + (parseInt(id))).addClass('redClass');
             // 获取href的值，去掉'#'
             var target = $('#N' + (parseInt(id) - 2));
-            console.log(target, 'target')
 
             // 使用animate()和scrollTop()滚动到对应的锚点
             $('html, body').animate({
@@ -60,12 +58,12 @@
                 html += "<p class='A_grammars' id=" + 'N' + item.Nid + ">";
                 //html += "<span class='grammar_no_box'>" + (grammars.findIndex(x => x.Nid === item.Nid) + 1) + "</span>";
                 //html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
+                // html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += "<a class='grammar_box'>";
                 if (item.keLv !== undefined && item.keLv !== '')
                     html += "<a class='grammar_lv_box'>" + item.keLv + "</a>";
                 if (item.page !== undefined && item.page !== '')
                     html += "<a class='grammar_page_box'>" + item.page + "</a>";
-                // html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += item.Text;
                 html += "</a>";
                 if (item.LNid !== '') {
@@ -74,13 +72,11 @@
                         var i = 1;
                         array_links.forEach(item => {
                             var linkObj = grammars.filter(x => x.Nid === parseInt(item));
-                            console.log(linkObj, 'linkObj')
                             html += "<a onclick='goto(\"" + (parseInt(item)) + "\")' class='anchor' data-id='N" + item.LNid + "'>[" + linkObj[0].Text + "]</a>   ";
                             i++;
                         })
                     } else {
                         var linkObj = grammars.filter(x => x.Nid === parseInt(item.LNid));
-                        console.log(linkObj, 'linkObj')
                         html += "<a onclick='goto(\"" + (parseInt(item.LNid)) + "\")' class='anchor' data-id='N" + item.LNid + "'>[" + linkObj[0].Text + "]</a>";
                     }
                 }
@@ -131,7 +127,6 @@
             $gbox.html(html);
         }
         function speakItem(text, index) {
-            console.log(index, 'index')
             //设置当前读的例句高亮
             $('.example_item').removeClass("active");
             $('#' + index).addClass("active");
@@ -309,10 +304,8 @@
             if (topno > 0) {
                 eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
                 eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
-                console.log(eplayNoStart, 'eplayNoStart')
-                console.log(eplayNoEnd, 'eplayNoEnd')
+              
                 examples = examples.slice(eplayNoStart, eplayNoEnd);
-                console.log(examples, 'examples')
             }
 
             var arrayPlay;
@@ -327,9 +320,10 @@
                     var goIndex = playIndex > 0 ? playIndex : i;
                     var elementOffset = $('#' + goIndex).offset();
                     var elementTop = elementOffset.top;
-                    const targetElement = document.querySelector("#target");
+                    
+                    // const targetElement = document.querySelector("#target");
                     window.scroll({
-                        top: elementTop - 200,
+                        top: elementTop - 160,
                         behavior: 'smooth'
                     });
                 }
@@ -346,6 +340,7 @@
                     $('.example_item').removeClass("active");
                     $('#' + (goIndex + 1)).addClass("active");
                     $("#no").val(goIndex + 1);
+                    playIndex = goIndex + 1;
                 }
             }
         }

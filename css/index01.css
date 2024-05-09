@@ -1,0 +1,20 @@
+@media only screen and (max-width: 980px) {
+    .right {
+        display: none;
+    }
+
+    .left {
+        width: 30%;
+    }
+
+    .center {
+        width: 70%;
+        border-right: hidden;
+    }
+    
+    .reading_example_box {
+        display: inline-block;
+        float: none;
+        width: 100% !important;
+    }
+}

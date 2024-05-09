@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>日语词汇</title>
+    <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
+    <script src="js/words/index.js"></script>
+    <script src="js/words/moji.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index01.css" media="screen and (max-width:720px)" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+</head>
+
+<body>
+    <div>
+        <input type="file" id="files" style="display: none" onchange="fileImport();">
+        <input type="button" id="fileImport" value="导入">
+    </div>
+    <a onclick="down()">下载</a>
+
+    <div id="moji"></div>
+    <audio controls='controls' class='audio_box' src='https://dict.youdao.com/dictvoice?le=jap&type=3&audio=妹さんはいくつですか'
+        preload='auto' id='audio'></audio>
+</body>
+<script>
+    function down() {
+        const data = { name: 'John', age: 30 };
+        const jsonData = JSON.stringify(data);
+        createAndDownloadFile('sss', jsonData);
+    }
+    //点击导入按钮,使files触发点击事件,然后完成读取文件的操作
+    $("#fileImport").click(function () {
+        $("#files").click();
+    })
+</script>
+<script>
+    console.log(wordList, 'wordList')
+    $(function () {
+        loadData();
+    })
+    function getAllIndexes(str, charToFind) {
+        const indexes = [];
+        for (let i = str.indexOf(charToFind); i !== -1; i = str.indexOf(charToFind, i + 1)) {
+            indexes.push(i);
+        }
+        return indexes;
+    }
+    function loadData() {
+        var html = '';
+        var index = 0;
+        wordList.forEach(element => {
+            html += '<div class="word_box">';
+            html += '<h4 class="word_name_box">' + element.word + '</h4>';
+            html += '<div class="reading_box">';
+            var ei = 0;
+            element.reading.forEach(item => {
+                html += '<ul class="reading_item_box">';
+                html += '<span class="reading_text_box">' + item.text + '</span>';
+                var tt = String(item.example);
+                const char = "（";
+                const char1 = "）";
+                const positions = getAllIndexes(tt, char);
+                const positionsEnd = getAllIndexes(tt, char1);
+                var txt = "";
+                for (var i = 0; i < positions.length; i++) {
+                    var temp = '';
+                    if (i === 0)
+                        txt += tt.substring(0, positions[i]);
+                    else txt += tt.substring(positionsEnd[i] + 1, positions[i + 1]);
+                    txt = String(txt).replace('\r', "")
+                }
+                html += "<a class='addErr'><svg id=\"addErr_" + index + '_' + ei + "\" onclick=\"addStar('" + element.word + "','" + element.word + "','" + element.word + "','" + index + '_' + ei + "')\" alt=\"加入错题本\" t=\"1715245116081\" class=\"icon\" viewBox=\"0 0 1025 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"5864\" width=\"16\" height=\"16\"><path d=\"M509.636419 846.619862L314.735025 973.60381c-102.779326 59.608397-162.387723 8.309049-135.292997-105.308167l48.770506-214.048333-173.225613-151.549832c-91.941436-81.103546-65.027342-151.549832 54.189452-162.387723l227.234433-21.675781 91.941436-211.158229c48.770506-108.198271 124.455107-108.198271 167.806667 0l91.941436 211.158229 227.234433 21.675781c119.036162 10.83789 140.711942 81.103546 54.189452 162.387723L796.298617 654.24731l48.770506 221.996119c27.094726 119.036162-32.513671 162.387723-135.292997 97.360381l-200.139707-126.983948z\" fill=\"#FF76EC\" p-id=\"5865\"></path><path d=\"M260.184311 65.569236l-26.010937 36.126301c64.485447 38.47451 126.622685 84.896807 182.257188 132.583525-55.815135 94.470277-96.457223 184.966661-119.758687 222.538013l70.085024 47.506086c12.282942-54.550714 44.796613-140.170048 92.48333-231.930852 76.226495 70.446287 136.376786 139.989416 166.722879 187.495502 0 0 45.699771-82.187335 52.744399-72.07197-27.63662-25.469042-97.541013-101.153643-186.592344-175.573823 33.416828-57.802081 71.891339-115.965426 114.881637-168.709825L587.84986 16.076204c-51.66061 43.17093-97.541013 102.0568-137.279943 162.929617-59.066502-45.519139-124.274475-87.60628-190.385606-113.436585z\" fill=\"#333333\" p-id=\"5866\"></path><path d=\"M300.465136 988.957488h-66.11113l-17.340625-68.098077H117.846685L100.867324 988.957488H34.936824l97.902276-299.125772h71.891339l95.734697 299.125772z m-99.527959-124.455107l-28.178515-96.457223c-2.167578-7.405892-3.793262-16.076204-4.515787-26.191568h-1.445052c-0.541895 8.489681-1.986947 16.979361-4.696419 25.28841L133.380994 864.502381h67.556183z\" fill=\"#3A3A3A\" p-id=\"5867\"></path></svg>";
+                html += "</a><a class='removeErr'><svg id=\"removeErr_" + index + '_' + ei + "\" onclick=\"removeStar('" + element.word + "','" + element.word + "','" + element.word + "','" + index + '_' + ei + "')\" t=\"1715244637220\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"4512\" width=\"16\" height=\"16\"><path d=\"M516.096 84.65c236.773 0 428.715 191.943 428.715 428.715 0 236.773-191.942 428.715-428.715 428.715-236.773 0-428.715-191.942-428.715-428.715 0-236.772 191.942-428.714 428.715-428.714z m0 81.92c-191.53 0-346.795 155.266-346.795 346.795 0 191.53 155.266 346.795 346.795 346.795 191.53 0 346.795-155.265 346.795-346.795 0-191.53-155.266-346.794-346.795-346.794z m177.493 316.758c22.622 0 40.96 18.338 40.96 40.96s-18.338 40.96-40.96 40.96H338.603c-22.622 0-40.96-18.338-40.96-40.96s18.338-40.96 40.96-40.96h354.986z\" fill=\"#d81e06\" p-id=\"4513\"></path></svg>";
+                html += '</a><div class="reading_example_box" id="example_' + index + '_' + ei + '">' + txt;
+                html += "<svg onclick=\"speakItem('" + txt + "','" + index + "_" + ei + "')\" t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"16\" height=\"16\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
+                html += '</div>';
+                html += '</ul>';
+                ei++;
+            });
+            html += '</div>';
+            html += '';
+            html += '';
+            html += '</div>';
+            index++;
+        });
+        $('#moji').html(html);
+    }
+    var errList = [];
+    function addStar(word, count, errCount, id) {
+        errList.push({ "word": word, "count": count + 1 });
+        console.log(errList, 'addStar--errList')
+        $('#addErr_' + id).hide();
+        $('#removeErr_' + id).show();
+    }
+    function removeStar(word, count, errCount, id) {
+        var i = errList.findIndex(x => x.word === word);
+        errList.splice(i);
+        console.log(errList, 'errList')
+        $('#addErr_' + id).show();
+        $('#removeErr_' + id).hide();
+    }
+    function speakItem(text, eid) {
+        //设置当前读的例句高亮
+        $('.reading_example_box').removeClass("active");
+        $('#example_' + eid).addClass("active");
+        var audio = document.getElementById('audio');
+        audio.play();
+        audio.pause();
+        var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
+        $('#audio').attr('src', link);
+        audio.load();
+        audio.playbackRate = 1;
+        audio.volume = 1;
+        function canPlay() {
+            if (audio.readyState === 4) {
+                // 在这里可以执行播放音频的操作
+                audio.play();
+            }
+        }
+        audio.addEventListener('canplaythrough', canPlay);
+        return true;
+    }
+</script>
+<style>
+    html {
+        overflow-x: initial !important;
+    }
+
+    html {
+        font-size: 14px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        margin: 0px;
+        padding: 0px;
+        height: auto;
+        inset: 0px;
+        font-size: 1rem;
+        line-height: 1.42857;
+        overflow-x: hidden;
+        background: inherit;
+        tab-size: 4;
+    }
+
+    .word_box {
+        /* background-color: gray; */
+        border: solid 1px black;
+        overflow: hidden;
+        zoom: 1;
+        padding: 10px;
+    }
+
+    .word_name_box {
+        display: inline-block;
+        margin-right: 15px;
+        float: left;
+    }
+
+    .reading_box {
+        display: block;
+        overflow: hidden;
+        zoom: 1;
+    }
+
+    .reading_item_box {}
+
+    .reading_text_box {
+        margin-right: 15px;
+        /* width: 160px; */
+        display: inline-block;
+        float: left;
+        color: #1874f6;
+    }
+
+    .reading_example_box {
+        color: #3e3d3d;
+        display: block;
+        float: left;
+    }
+
+    .active {
+        background-color: gold;
+    }
+
+    .addErr:hover {
+        color: blue;
+    }
+
+    .addErr:hover::after {
+        content: "加入错词本";
+        font-size: 10px;
+    }
+
+    .removeErr svg {
+        display: none;
+    }
+
+    .removeErr:hover {
+        color: blue;
+        font-size: small;
+    }
+
+    .removeErr:hover::after {
+        content: "移出错词本";
+        font-size: 10px;
+    }
+</style>
+
+</html>

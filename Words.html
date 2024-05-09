@@ -18,6 +18,7 @@
         <input type="button" id="fileImport" value="导入">
     </div>
     <a onclick="down()">下载</a>
+    <a onclick="checkCookie()">checkCookie</a>
 
     <div id="moji"></div>
     <audio controls='controls' class='audio_box' src='https://dict.youdao.com/dictvoice?le=jap&type=3&audio=妹さんはいくつですか'
@@ -35,9 +36,38 @@
 </script>
 <script>
     window.onbeforeunload = function (e) {
-        down();
+        // down();
+        setCookie("errList", JSON.stringify(errList), 30);
     };
-    console.log(wordList, 'wordList')
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + cvalue + "; " + expires;
+    }
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name) == 0) { return c.substring(name.length, c.length); }
+        }
+        return "";
+    }
+    function checkCookie() {
+        var user = getCookie("errList");
+        if (user != "") {
+            alert("错题： " + user + "");
+        }
+        else {
+            // user = prompt("请输入你的名字:", "");
+            // if (user != "" && user != null) {
+            //     setCookie("errList", user, 30);
+            // }
+        }
+    }
+
     $(function () {
         loadData();
     })
@@ -91,6 +121,7 @@
     var errList = [];
     function addStar(word, count, errCount, id) {
         errList.push({ "word": word, "count": count + 1 });
+        setCookie("errList", JSON.stringify(errList), 30);
         console.log(errList, 'addStar--errList')
         $('#addErr_' + id).hide();
         $('#removeErr_' + id).show();
@@ -98,6 +129,7 @@
     function removeStar(word, count, errCount, id) {
         var i = errList.findIndex(x => x.word === word);
         errList.splice(i);
+        setCookie("errList", JSON.stringify(errList), 30);
         console.log(errList, 'errList')
         $('#addErr_' + id).show();
         $('#removeErr_' + id).hide();

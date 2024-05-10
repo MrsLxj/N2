@@ -18,6 +18,7 @@
         <input type="button" id="fileImport" value="导入">
     </div>
     <a onclick="down()">下载</a>
+    <a onclick="download1()">下载1</a>
     <a onclick="checkCookie()">checkCookie</a>
 
     <div id="moji"></div>
@@ -35,6 +36,28 @@
     })
 </script>
 <script>
+
+    const file = new File(["DevPoint，开发技术点"], "info.md", {
+        type: "text/plain",
+    });
+
+    function download(downfile) {
+        const tmpLink = document.createElement("a");
+        const objectUrl = URL.createObjectURL(downfile);
+
+        tmpLink.href = objectUrl;
+        tmpLink.download = downfile.name;
+        document.body.appendChild(tmpLink);
+        tmpLink.click();
+
+        document.body.removeChild(tmpLink);
+        URL.revokeObjectURL(objectUrl);
+    }
+
+    function download1(){
+        download(file);
+    }
+
     window.onbeforeunload = function (e) {
         // down();
         setCookie("errList", JSON.stringify(errList), 30);

@@ -29,7 +29,7 @@ function getCsv(csvContent) {
             record.reading.push({ text: fields[1], example: fields[2].Replace('\r'), memoryAnswer: '', memoryInput: '', memoryCount: '', memoryError: '' });
             index++;
         } else {
-            result[index-1].reading.push({ text: fields[1], example: fields[2].toString().Replace('\r'), memoryAnswer: '', memoryInput: '', memoryCount: '', memoryError: '' });
+            result[index - 1].reading.push({ text: fields[1], example: fields[2].toString().Replace('\r'), memoryAnswer: '', memoryInput: '', memoryCount: '', memoryError: '' });
             record = { word: '', reading: [] };
         }
         result.push(record);
@@ -39,10 +39,26 @@ function getCsv(csvContent) {
 
 //创建下载
 function createAndDownloadFile(fileName, content) {
-    var aTag = document.createElement('a');
-    var blob = new Blob([content]);
-    aTag.download = fileName;
-    aTag.href = URL.createObjectURL(blob);
-    aTag.click();
-    URL.revokeObjectURL(blob);
+    // var aTag = document.createElement('a');
+    // var blob = new Blob([content]);
+    // aTag.download = fileName;
+    // aTag.href = URL.createObjectURL(blob);
+    // aTag.click();
+    // URL.revokeObjectURL(blob);
+    var blob = new Blob([content], { type: "application/octet-stream" });
+    //判断ie
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, "错题本.txt");
+    } else {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "错题本.txt";
+        document.body.appendChild(a);
+        a.onclick = function () {
+            document.body.removeChild(a);
+        };
+        a.click();
+    }
+
+
 } 

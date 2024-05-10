@@ -48,11 +48,11 @@ function createAndDownloadFile(fileName, content) {
     var blob = new Blob([content], { type: "application/octet-stream" });
     //判断ie
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-        window.navigator.msSaveOrOpenBlob(blob, "错题本.txt");
+        window.navigator.msSaveOrOpenBlob(blob, "error.txt");
     } else {
         var a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "错题本.txt";
+        a.download = "error.txt";
         document.body.appendChild(a);
         a.onclick = function () {
             document.body.removeChild(a);

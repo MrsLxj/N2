@@ -167,6 +167,7 @@ var grammars = [
     { "NLv": 'N1', "page": 'P31', "keLv": "2课", "Nid": 164, "LNid": '', "Text": "きらいがある" },
     { "NLv": 'N1', "page": 'P31', "keLv": "2课", "Nid": 165, "LNid": '', "Text": "次第だ" },
     { "NLv": 'N1', "page": 'P32', "keLv": "2课", "Nid": 166, "LNid": '', "Text": "をもって" },
+    { "NLv": 'N1', "page": 'P33', "keLv": "2课", "Nid": 279, "LNid": '', "Text": "あっての" },
     { "NLv": 'N1', "page": 'P33', "keLv": "2课", "Nid": 167, "LNid": '', "Text": "やまない" },
 
     { "NLv": 'N1', "page": 'P39', "keLv": "3课", "Nid": 168, "LNid": '', "Text": "まみれ" },

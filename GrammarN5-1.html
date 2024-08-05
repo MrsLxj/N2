@@ -60,11 +60,12 @@
                 //html += "<span class='grammar_lv_box'>" + item.NLv + "</span>";
                 // html += "<span class='grammar_No_box'>" + gIndex + ".</span>";
                 html += "<a class='grammar_box'>";
+                html += "<a>";
+                html += item.Text + "|";
                 if (item.keLv !== undefined && item.keLv !== '')
                     html += "<a class='grammar_lv_box'>" + item.keLv + "</a>";
                 if (item.page !== undefined && item.page !== '')
                     html += "<a class='grammar_page_box'>" + item.page + "</a>";
-                html += item.Text;
                 html += "</a>";
                 if (item.LNid !== '') {
                     if (item.LNid.includes("/") === true) {
@@ -81,7 +82,7 @@
                     }
                 }
                 html += "</p>";
-                html += "<span class='ShowNid'>     " + item.Nid + "      </span>";
+                // html += "<span class='ShowNid'>     " + item.Nid + "      </span>";
 
                 //解释
                 var get_definitions = definitions.filter(x => x.Nid === item.Nid);
@@ -89,13 +90,13 @@
                 var dindex = 0;
                 get_definitions.forEach(ditem => {
                     var dhtml = "<div class='B_definitions'>";
-                    dhtml += "<li data-id=" + ditem.Did + ">";
+                    // dhtml += "<li data-id=" + ditem.Did + ">";
                     dhtml += "<div class='definitions_no_box'>";
-                    dhtml += "<span >" + enums[0] + " </span>";
+                    // dhtml += "<span >" + enums[0] + " </span>";
                     dhtml += "<span>" + ditem.Text + "</span>";
                     dhtml += "<span class='noteA_box'>" + ditem.noteA + "</span>";
                     dhtml += "</div>";
-                    dhtml += "</li>";
+                    // dhtml += "</li>";
                     dhtml += "</div>";
                     html += dhtml;
                     //例句
@@ -104,21 +105,21 @@
                     get_examples.forEach(eitem => {
                         //console.log(eitem,'eitem')
                         eIndex++;
-                        var ehtml = "<div class='C_examples'>";
-                        ehtml += "<li id=" + eIndex + " class='example_item'>";
-                        //console.log(examples.findIndex(x => x.Eid === eitem.Eid), eitem.Eid, 'examples.findIndex(x => x.Eid === eitem.Eid)')
-                        //(examples.findIndex(x => x.Eid === eitem.Eid) + 1)
-                        ehtml += "<span class='no_box'>" + eIndex + "</span>";
-                        ehtml += "<span class='ShowNid'>     " + eitem.Nid + "      </span>";
-                        ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eIndex + "') >" + eitem.Text + "</span>";
+                        var ehtml = "<div class='C_examples'>";//多余
+                        // ehtml += "<li id=" + eIndex + " class='example_item'>";
+                        // ehtml += "<span class='no_box'>" + eIndex + "</span>";
+                        // ehtml += "<span class='ShowNid'>     " + eitem.Nid + "      </span>";
+                        ehtml += "<span onclick=speakItem('" + eitem.Text + "','" + eIndex + "') >" + eitem.Text + "|" + "</span>";
                         ehtml += "<svg onclick=speakItem('" + eitem.Text + "','" + eIndex + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"12\" height=\"12\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
-                        //ehtml += "<audio controls='controls' class='audio_box' src='" + link + "' preload='auto' id='audio" + eitem.Eid + "'>";
+
+                        ehtml += "<input type=\"text\" class=\"add_du\" value=\"\"/>";
+                        ehtml += "<span>ceshi|</span>";
                         //ehtml += "</audio>";
-                        ehtml += "</li>";
+                        // ehtml += "</li>";
                         ehtml += "</div>";
                         html += ehtml;
                     })
-                    html += "<span class='jiexu_box'>" + ditem.jiexu + "</span>";
+                    html += "<span class='jiexu_box'>" + ditem.jiexu + "|" + "</span>";
                     html += "</div>";
                     dindex++;
                 })
@@ -202,6 +203,10 @@
     <script>
         $(function () {
             loadData();
+            // $("body").on("click", ".add_du", aa);
+            $('#grammars_box input').on('blur', function () {
+                $(this).next().text($(this).val() + "|");
+            });
         })
         //-------------------------播放方法开始-------------------------
         //控制读哪个例句id
@@ -304,7 +309,7 @@
             if (topno > 0) {
                 eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
                 eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
-              
+
                 examples = examples.slice(eplayNoStart, eplayNoEnd);
             }
 
@@ -320,7 +325,7 @@
                     var goIndex = playIndex > 0 ? playIndex : i;
                     var elementOffset = $('#' + goIndex).offset();
                     var elementTop = elementOffset.top;
-                    
+
                     // const targetElement = document.querySelector("#target");
                     window.scroll({
                         top: elementTop - 160,
@@ -386,6 +391,69 @@
         }
         //-------------------------播放方法结束-------------------------
     </script>
+    <script>
+        function text() {
+            // // $2a$10$17CL62txr6fEltnC7IDCje/MHTOZuLzKrUofc7rHIWX7ejDIunMg6
+            // let req = new XMLHttpRequest();
+
+            // req.onreadystatechange = () => {
+            //     if (req.readyState == XMLHttpRequest.DONE) {
+            //         console.log(req.responseText);
+            //     }
+            // };
+            // let obj = { id: 1, gText: "11", location: "1", rei: [{ location: "1" }] };
+            // req.open("POST", "https://api.jsonbin.io/v3/s", true);
+            // req.setRequestHeader("Content-Type", "application/json");
+            // req.setRequestHeader("X-Schema-Doc-Name", "lxj");
+            // req.setRequestHeader("X-Master-Key", "$2a$10$17CL62txr6fEltnC7IDCje/MHTOZuLzKrUofc7rHIWX7ejDIunMg6");
+            // req.send(obj);
+            let req = new XMLHttpRequest();
+
+            req.onreadystatechange = () => {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    console.log(req.responseText);
+                }
+            };
+
+            req.open("POST", "https://api.jsonbin.io/v3/b", true);
+            req.setRequestHeader("Content-Type", "application/json");
+            req.setRequestHeader("X-Master-Key", "$2a$10$zMQLiCmVC4Mm17NcTigWweKSAok4gZ46INfTXa/c4NvfvWkwJNWT.");
+            req.send('{"sample": "Hello World"}');
+        }
+        function funEditData() {
+            // var dd = $("#grammars_box").html();
+            var dd = $("#grammars_box").children();
+            let arrList = [];
+            let obj = { gText: "", location: "", rei: [] };
+
+            let rei = { definition: "", example: "" };
+            let reiList = [];
+
+            let indexId = 0;
+            dd.each(function (index, element) {
+                if ($(element).attr('class') === "A_grammars") {
+                    let arr = $(element).text().split('|');
+                    obj.gText = arr[0];
+                    obj.location = arr[1];
+                    arrList.push({ ...obj });
+                    indexId++;
+                }
+                else {
+                    if ($(element).attr('class') === "B_definitions") {
+                        rei.definition = $(element).text();
+                    }
+                    if ($(element).attr('class') === "C_Box") {
+                        rei.example = $(element).text();
+                        reiList.push({ ...rei });
+                        arrList[indexId - 1].rei = arrList[indexId - 1].rei.concat(reiList);
+                        reiList = [];
+                        // console.log(reiList,'reiList-----------2');
+                        console.log(arrList[indexId - 1], 'List-----------');
+                    }
+                }
+            });
+        }
+    </script>
     <div>
         <div class="tool_box">
 
@@ -410,16 +478,18 @@
                     <option value="4">N4</option>
                     <option value="5">N5</option>
                 </select>
-                <!--checked="checked"  及以下-->
+                <!--checked="checked"  及以下  このぶっけんは、しずかでこうつうもべんりとあって、にゅうきょきぼうしゃがさっとうしている。  funEditData()  -->
                 <input type="checkbox" id="isUp" style="width: 30px;display:none;" />
             </div>
             <div style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px;">
                 <input type="button" id="getContral" class="bule_start" value="查询" onclick="loadData()" />
+                <input type="button" id="getEditData" class="bule_start" value="获取" onclick="text()" />
                 <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
                 <input type="button" id="dContral" class="bule_start" value="解释关" onclick="Show('词条')" />
                 <input type="button" id="eContral" class="bule_start" value="例句关" onclick="Show('例句')" />
                 <input type="button" id="jjContral" class="bule_start" value="接续开" onclick="Show('接续')" />
                 <input type="button" id="ShowNidContral" class="bule_start" value="开" onclick="ShowNidF()" />
+
             </div>
             <!--<div id="msg" style="display:inline-block;"></div>-->
         </div>
@@ -525,6 +595,13 @@
         .C_examples {
             font-size: 1rem;
             color: gray;
+        }
+
+        .add_du {
+            display: block;
+            width: 100%;
+            line-height: 22px;
+            font-size: 15px;
         }
 
         .tool_box {

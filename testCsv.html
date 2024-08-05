@@ -1,0 +1,175 @@
+<html>
+
+<head>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <title></title>
+    <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
+</head>
+
+<body>
+    <script src="js/papaparse.min.js"></script>
+    <script src="js/toNoWords/getCsv.js"></script>
+    <input type="file" id="csvFile" accept=".csv">
+    <input type="button" id="submit" value="加载词汇" onclick="loadData()">
+    <select id="colNo">
+        <option value="1" selected>第1列</option>
+        <option value="2">第2列</option>
+        <option value="3">第3列</option>
+        <option value="4">第4列</option>
+        <option value="5">第5列</option>
+    </select>
+    <!-- <input type="text" id="colNo" value="1"> -->
+     <br>
+    <input type="button" id="submit" value="默写" onclick="funHide()">
+    <input type="button" id="submit" value="查看" onclick="funShow()">
+    <input type="button" id="submit" value="保存测试结果" onclick="funShow()">
+    <!-- toCsv -->
+
+    <div id="word_box"></div>
+    <script>
+        const fileInput = document.getElementById('csvFile');
+        var config = buildConfig();
+        fileInput.addEventListener('change', (event) => {
+            $('input[type=file]').parse({
+                config: config,
+                before: function (file, inputElem) {
+                    // executed before parsing each file begins;
+                    // what you return here controls the flow
+                },
+                error: function (err, file, inputElem, reason) {
+                    // executed if an error occurs while loading the file,
+                    // or if before callback aborted for some reason
+                },
+                complete: function () {
+                    console.log("    Results:", csvResults);
+                }
+            });
+        });
+        function toCsv() {
+            var input = csvResults;
+            var csv = Papa.unparse(input, config);
+
+            if (csv.length > maxUnparseLength) {
+                csv = csv.substr(0, maxUnparseLength);
+                console.log("(Results truncated for brevity)");
+            }
+
+            console.log(csv);
+
+            setTimeout(enableButton, 100);	// hackity-hack
+        }
+
+        let csvResults = [];
+        function completeFn(results) {
+            end = now();
+
+            if (results && results.errors) {
+                if (results.errors) {
+                    errorCount = results.errors.length;
+                    firstError = results.errors[0];
+                }
+                if (results.data && results.data.length > 0)
+                    rowCount = results.data.length;
+            }
+
+            printStats("Parse complete");
+            csvResults = results.data;
+            // icky hack
+            setTimeout(enableButton, 100);
+        }
+
+        // // 定义CSV数据
+        // var csvData = "Name,Age,City\nJohn,25,New York\nJane,30,San Francisco";
+
+        // // 使用PapaParse解析CSV数据
+        // var parsedData = Papa.parse(csvData);
+
+        // // 打印解析结果
+        // console.log(parsedData);
+    </script>
+    <script>
+        function loadData() {
+            var wordsHtml = "";
+            csvResults.forEach(x => {
+                console.log(x, 'x');
+                wordsHtml += "<ul>";
+                var index = 0;
+                Object.keys(x).forEach(function (key) {
+                    console.log(x[key]);
+                    wordsHtml += "<li class='" + (index === 0 ? "col_1" : index === 1 ? "col_2" : "col_3") + "''>";
+                    wordsHtml += x[key];
+                    wordsHtml += "</li>";
+                    wordsHtml += "<input class='" + (index === 0 ? "col_input_1" : index === 1 ? "col_input_2" : "col_input_3") + "''/>";
+                    // wordsHtml += x[key];
+                    index++;
+                });
+                wordsHtml += "</ul>";
+                wordsHtml += "";
+                wordsHtml += "";
+            })
+            $("#word_box").html(wordsHtml);
+        }
+        function funHide() {
+            // var clonedElement = $('#word_box').clone();
+            // clonedElement.addClass('hide_box');
+            // clonedElement.appendTo('body'); // 将复制的元素追加到body的末尾
+            $("#word_box .col_" + $("#colNo").val()).hide();
+            $("#word_box .col_input_" + $("#colNo").val()).show();
+        }
+        function funShow() {
+            $("#word_box .col_1").show();
+            $("#word_box .col_input_1").hide();
+            $("#word_box .col_2").show();
+            $("#word_box .col_input_2").hide();
+            $("#word_box .col_3").show();
+            $("#word_box .col_input_3").hide();
+        }
+    </script>
+</body>
+<style>
+    .hide_box {
+        position: absolute;
+        top: 25px;
+        background-color: aqua;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        display: inline-block;
+        /* margin-left: 20px; */
+    }
+
+    .col_1 {
+        width: 20%;
+    }
+
+    .col_2 {
+        width: 20%;
+    }
+
+    .col_3 {
+        width: 60%;
+    }
+
+    .col_input_1 {
+        width: 20%;
+        display: none;
+    }
+
+    .col_input_2 {
+        width: 20%;
+        display: none;
+    }
+
+    .col_input_3 {
+        width: 60%;
+        display: none;
+    }
+
+    /* col_input */
+</style>
+
+</html>

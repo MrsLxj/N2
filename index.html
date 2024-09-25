@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <title>日语语法</title>
+    <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
+    <script src="js/index/index.js?v=1"></script>
+</head>
+
+<body>
+    <div class="tool_box">
+
+        <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />  <input type="number" id="sudu" style="width: 30px;" value="1.25" />-->
+        <div style="display: inline-block; margin-top: 8px; margin-left: 8px; ">
+            序号:<input type="number" id="no" style="width: 30px;" value="1" />
+            间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
+            速度:
+            <select id="sudu" style="width: 50px;" value="1">
+                <option value="1">1</option>
+                <option value="1.25">1.25</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+                <option value="2.5">2.5</option>
+                <option value="0.75">0.75</option>
+            </select>
+            <input type="number" id="liang" style="width: 30px;display:none;" value="1" />
+            <div style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px;">
+                <input type="button" id="getEditData" class="bule_start" value="获取" onclick="text()" />
+                <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
+                <input type="button" id="ShowNidContral" class="bule_start" value="开" onclick="ShowNidF()" />
+
+            </div>
+        </div>
+    </div>
+    <div id="show_box">
+        <audio controls='controls' class='audio_box'
+            src='https://dict.youdao.com/dictvoice?le=jap&type=3&audio=妹さんはいくつですか' preload='auto' id='audio'></audio>
+        <ul id="item_Box">
+
+    </div>
+    </div>
+    <script>
+        $(function () {
+            loadData();
+        })
+        function loadData() {
+            var keys = Object.keys(dataAll[0]);
+            var html = "";
+            dataAll.forEach((item, index) => {
+                console.log(item);
+                html += "<li>";
+                keys.forEach(itemKey => {
+                    if (itemKey === 'Name') {
+                        html += "<div class='example_item'>" + item[itemKey];
+                        html += "<svg onclick=speakItem('" + item[itemKey] + "','" + index + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"12\" height=\"12\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
+                        html += "</div>";
+                        html += "<span>" + (index + 1) + "</span>";
+                    }
+                    else {
+                        html += "<span>  " + item[itemKey] + "<span>";
+                    }
+                })
+                html += "</li>";
+            })
+            $("#item_Box").html(html);
+        }
+
+        function speakItem(text, index) {
+            //设置当前读的例句高亮
+            $('.example_item').removeClass("active");
+            $('#' + index).addClass("active");
+
+            var audio = document.getElementById('audio');
+            audio.play();
+            audio.pause();
+            var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
+            $('#audio').attr('src', link);
+            audio.load();
+            audio.playbackRate = $('#sudu').val();
+            audio.volume = $('#liang').val();
+            function canPlay() {
+                if (audio.readyState === 4) {
+                    // 在这里可以执行播放音频的操作
+                    audio.play();
+                }
+            }
+            audio.addEventListener('canplaythrough', canPlay);
+
+            //赋值序号
+            var no = parseInt(index) + 1;
+            $("#no").val(no);
+        }
+        //从no开始读
+        function speakAll() {
+            if ($("#playContral").val() === '暂停') {
+                isPlay = false;
+                $("#playContral").val("播放").addClass("bule_start").removeClass("red_start");
+                $('.mask').hide();
+                $('.loading').hide();
+            } else {
+                isPlay = true;
+                $('.mask').show();
+                $('.loading').show();
+                $("#playContral").val("暂停").removeClass("bule_start").addClass("red_start");
+                playIndex = $("#no").val() - 1;
+                run(gen);
+            }
+        }
+        //循环读
+        function* gen() {
+            var examples = dataAll.map(x=>x.Name);
+
+            var topno = $('#topno').val();
+            var endno = $('#endno').val();
+            var eplayNoStart = 0;
+            var eplayNoEnd = 0;
+            if (topno > 0) {
+                eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
+                eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
+
+                examples = examples.slice(eplayNoStart, eplayNoEnd);
+            }
+
+            var arrayPlay;
+            if (parseInt(playIndex) > 0) {
+                arrayPlay = examples.slice(playIndex);
+            }
+            else {
+                arrayPlay = examples;
+            }
+            for (var i = 0; i < arrayPlay.length; i++) {
+                if (i > 0 || playIndex > 0) {
+                    var goIndex = playIndex > 0 ? playIndex : i;
+                    var elementOffset = $('#' + goIndex).offset();
+                    var elementTop = elementOffset.top;
+
+                    // const targetElement = document.querySelector("#target");
+                    window.scroll({
+                        top: elementTop - 160,
+                        behavior: 'smooth'
+                    });
+                }
+                let a1 = yield asyncThunk(arrayPlay[i].Text, i, arrayPlay);
+                //停止时，跳出循环
+                if (!a1) {
+                    break;
+                } else {
+                    var goIndex = examples.findIndex(x => x.Name === arrayPlay[i].Text);
+                    //console.log(goIndex, 'else   goIndex')
+                    $('.mask').hide();
+                    $('.loading').hide();
+                    //设置当前读的例句高亮
+                    $('.example_item').removeClass("active");
+                    $('#' + (goIndex + 1)).addClass("active");
+                    $("#no").val(goIndex + 1);
+                    playIndex = goIndex + 1;
+                }
+            }
+        }
+        //控制中断
+        function run(fn) {
+            isPlay = true;
+            const g = fn();
+            //g=gen
+            function callBack(data) {
+                const result = g.next(data);
+                if (result.done) return;
+                result.value(callBack);
+            }
+            callBack();
+        }
+         //延时
+         function asyncThunk(Text, i, arrayPlay) {
+            return function (callBack) {
+                var miao = 0;
+                if (i === 0) miao = 1;
+                if (i > 0) {
+                    //var audio = document.getElementById('audio' + arrayPlay[i - 1].Eid);
+                    //miao = audio.duration + 1;
+                    if ($('#sudu').val() === "1") {
+                        miao = 4;
+                        if (arrayPlay[i - 1].Text.length >= 10) {
+                            miao = 4;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 17) {
+                            miao = 5;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 25) {
+                            miao = 6;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 8;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 40) {
+                            miao = 9;
+                        }
+                    } else if ($('#sudu').val() === '1.5' || $('#sudu').val() === '1.25') {
+                        if (arrayPlay[i - 1].Text.length >= 10) {
+                            miao = 3;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 20) {
+                            miao = 4;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 5;
+                        }
+                        if (arrayPlay[i - 1].Text.length >= 40) {
+                            miao = 6;
+                        }
+                    }
+                    if ($('#sudu').val() === '1.25') {
+                        if (arrayPlay[i - 1].Text.length >= 30) {
+                            miao = 6;
+                        }
+                    }
+                    //console.log(arrayPlay[i - 1].Text.length, miao, 'miao')
+                }
+                setTimeout(() => callBack(speak(Text, i)), (miao * 1000 + $('#interval').val() * 1000));
+            };
+        }
+        //读
+        function speak(text, i) {
+            var examples = dataAll.map(x=>x.Name);
+
+            var topno = $('#topno').val();
+            var endno = $('#endno').val();
+            var eplayNoStart = 0;
+            var eplayNoEnd = 0;
+            if (topno > 0) {
+                eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
+                eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
+                examples = examples.slice(eplayNoStart, eplayNoEnd);
+            }
+
+            if (!isPlay) {
+                playIndex = i;
+                return false;
+            }
+
+            var audio = document.getElementById('audio');
+            audio.play();
+            audio.pause();
+            var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
+            $('#audio').attr('src', link);
+            audio.load();
+            audio.playbackRate = $('#sudu').val();
+            audio.volume = $('#liang').val();
+            function canPlay() {
+                if (audio.readyState === 4) {
+                    // 在这里可以执行播放音频的操作
+                    audio.play();
+                }
+            }
+            audio.addEventListener('canplaythrough', canPlay);
+            return true;
+        }
+    </script>
+</body>
+<style type='text/css'>
+    .loading {
+        position: fixed;
+        /* width: 100px;
+        height: 30px;*/
+        line-height: 30px;
+        text-align: center;
+        color: dodgerblue;
+        /*background-color: white;*/
+        /*border-radius: 15px;*/
+        margin: 0 auto;
+        top: 50%;
+        left: 50%;
+        margin-left: -40px;
+        margin-top: -40px;
+        display: none;
+    }
+
+    .mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .5);
+        display: none;
+    }
+
+    html {
+        overflow-x: initial !important;
+    }
+
+    html {
+        font-size: 14px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        margin: 0px;
+        padding: 0px;
+        height: auto;
+        inset: 0px;
+        font-size: 1rem;
+        line-height: 1.42857;
+        overflow-x: hidden;
+        background: inherit;
+        tab-size: 4;
+    }
+
+    ul li {
+        list-style-type: none;
+    }
+
+    div li {
+        list-style-type: none;
+    }
+
+    #show_box {
+        margin-top: 70px;
+    }
+
+
+    .B_Box {
+        margin-left: 12px;
+    }
+
+    .C_Box {
+        margin-left: 18px;
+    }
+
+    .A_grammars {
+        font-size: 1.2rem;
+        border: 2px dashed #c5c3c3;
+        background-color: #f0f1f1;
+    }
+
+    .B_definitions {
+        font-size: 1rem;
+        color: blue;
+    }
+
+    .C_examples {
+        font-size: 1rem;
+        color: gray;
+    }
+
+    .add_du {
+        display: block;
+        width: 100%;
+        line-height: 22px;
+        font-size: 15px;
+    }
+
+    .tool_box {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        z-index: 1000;
+        /* 确保元素在其他内容之上 */
+    }
+
+    .grammar_no_box {
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        color: #0000ff;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .grammar_box {
+        margin-right: 10px;
+    }
+
+    .grammar_lv_box {
+        /* float: right; */
+        margin-right: 10px;
+    }
+
+    .grammar_page_box {
+        margin-right: 10px;
+        float: right;
+        color: grey;
+        font-size: 12px;
+    }
+
+    .definitions_no_box {
+        color: grey;
+        font-size: 13px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .noteA_box {
+        color: brown;
+    }
+
+    .jiexu_box {
+        display: none;
+        font-size: 10px;
+        margin-left: 28px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .no_box {
+        border: 1px solid #dde4f9;
+        border-radius: 10px;
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        /*#55b7ff*/
+        background-color: #dde4f9;
+        color: #000000;
+        margin-right: 10px;
+    }
+
+    .active {
+        background-color: gold;
+    }
+
+    /*#playContral {
+        width: 65px;
+        height: 30px;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+    }
+
+    #audioContral {
+        width: 65px;
+        height: 30px;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+        float: right;
+        margin-right: 8px;
+    }
+
+    #play {
+        width: 40px;
+        height: 30px;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        color: white;
+    }*/
+
+    .bule_start {
+        background-color: cornflowerblue;
+        color: white;
+        text-align: center;
+        border-color: cornflowerblue;
+    }
+
+    .red_start {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+    .audio_box {
+        height: 12px;
+        line-height: 12px;
+        display: none;
+    }
+
+    .icon {
+        vertical-align: middle;
+    }
+
+    .redClass {
+        background-color: #c76666;
+        border-color: #c76666;
+    }
+
+    .anchor {
+        font-size: 10px;
+        color: #0000ff;
+    }
+
+    .ShowNid {
+        color: red;
+        display: none;
+    }
+</style>
+</body>
+
+</html>

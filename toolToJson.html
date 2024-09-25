@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>to json</title>
+    <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index01.css" media="screen and (max-width:720px)" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+</head>
+
+<body>
+    <input type="file" id="csvFile" />
+    <button onclick="convertCSVToJSON()">转换为JSON</button>
+    <pre id="jsonOutput"></pre>
+</body>
+<script>
+    function convertCSVToJSON() {
+        console.log("convertCSVToJSON");
+        const input = document.getElementById('csvFile');
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target.result;
+            const lines = text.split('\n');
+            console.log("lines", lines);
+
+            const result = lines.map(line => line.split(',')).slice(1).map(items => {
+                const obj = {};
+                const headers = lines[0].split(',');
+                headers.forEach((header, index) => {
+                    var headerNew = header.replace('\r', '');
+                    var val = items[index] == null ? "" : items[index];
+                    val = val.indexOf('\r') >= 0 ? items[index].replace('\r', '') : items[index];
+                    obj[headerNew] = val;
+                });
+                return obj;
+            });
+
+            const jsonOutput = JSON.stringify(result, null, 2);
+            document.getElementById('jsonOutput').textContent = jsonOutput;
+        };
+        reader.readAsText(input.files[0]);
+    }
+</script>
+
+</html>

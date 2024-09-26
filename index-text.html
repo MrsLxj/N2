@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width initial-scale=1'>
+    <title>日语语法</title>
+    <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
+    <script src="js/index/index.js?v=1"></script>
+    <script src="js/grammarData.js"></script>
+    <script src="js/index/common.js"></script>
+</head>
+
+<body>
+    <div id="show_box">
+        <audio controls='controls' class='audio_box'
+            src='https://dict.youdao.com/dictvoice?le=jap&type=3&audio=妹さんはいくつですか' preload='auto' id='audio'></audio>
+        <ul class="text_row">
+        </ul>
+    </div>
+    <div style="display: none; margin-top: 8px; margin-left: 8px; ">
+        序号:
+        <input type="number" id="no" min="1" step="1" style="width: 30px;" value="1">
+
+        间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
+        速度:
+        <select id="sudu" style="width: 50px;" value="1">
+            <option value="1">1</option>
+            <option value="1.25">1.25</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+            <option value="2.5">2.5</option>
+            <option value="0.75">0.75</option>
+        </select>
+        <input type="number" id="liang" style="width: 30px;display:none;" value="1" />
+        <div style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px;">
+            <!-- <input type="button" id="getEditData" class="bule_start" value="获取" onclick="text()" /> -->
+            <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
+
+        </div>
+    </div>
+    <!-- <ul class="text_row">
+        
+        <li class="text_Box">
+            <div id="0" class="example_item">
+                <svg onclick="speakItem('にたいして','0')" t="1713489413249" class="icon" viewBox="0 0 1024 1024"
+                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1509" width="32" height="32">
+                    <path
+                        d="M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z"
+                        fill="#696969" p-id="1510"></path>
+                    <path
+                        d="M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z"
+                        fill="#696969" p-id="1511"></path>
+                </svg>
+                <div onclick="showItem('answer1')" class="wenhao">？</div><span class="answer" id="answer1">1にたいして</span>
+            </div>
+        </li>
+    </ul> -->
+    <script>
+        $(function () {
+            loadData();
+        })
+        function getRandomObjects(arr) {
+            // 使用slice()获取原数组的副本，以免修改原数组
+            const arrayCopy = arr.slice();
+
+            // 通过Math.random()打乱数组顺序
+            arrayCopy.sort(() => 0.5 - Math.random());
+
+            // 返回打乱后数组的前10个元素
+            return arrayCopy.slice(0, 10);
+        }
+
+        function loadData(type_t) {
+            var html = "";
+            var arrlist = getRandomObjects(grammars);
+            var keys = Object.keys(grammars[0]);
+
+            arrlist.forEach((item, index) => {
+                html += "<li class=\"text_Box\">";
+                keys.forEach(itemKey => {
+                    if (itemKey === 'Text') {
+                        // html += "<div id='" + (index) + "' class='example_item'>";
+                        // html += "<svg onclick=speakItem('" + item[itemKey] + "','" + index + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"32\" height=\"32\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
+
+                        // html += "<div onclick=showItem('answer" + (index + 1) + "') class='wenhao'>？</div>";
+                        // html += "<span class='answer' id='answer" + (index + 1) + "'>" + (index + 1) + item[itemKey] + "</span>";
+                        // html += "</div>";
+                        html += "<div id='" + (index) + "' class=\"example_item\">"
+                        html += "<svg onclick=speakItem('" + item[itemKey] + "','" + index + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"32\" height=\"32\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
+                        html += "<div onclick=\"showItem('answer" + (index + 1) + "')\" class=\"wenhao\">？</div>"
+                        html += "<span class=\"answer\" id='answer" + (index + 1) + "'>" + (index + 1) + item[itemKey] + "</span>"
+                        html += "</div>"
+                    }
+                    // else {
+                    //     html += "<span>  " + item[itemKey] + "<span>";
+                    // }
+                })
+                html += "</li>";
+            })
+            $(".text_row").html(html);
+        }
+        function showItem(name) {
+            // 假设你要检查的元素有一个ID为"myElement"
+            var isHidden = $("#" + name).css('display') === 'none';
+
+            if (isHidden) {
+                // 元素是隐藏的
+                $("#" + name).show();
+            } else {
+                // 元素是可见的
+                $("#" + name).hide();
+            }
+        }
+        function speakItem(text, index) {
+            //赋值序号
+            var no = parseInt(index) + 1;
+            $("#answer" + no).hide();
+            //设置当前读的例句高亮
+            $('.text_Box').removeClass("active");
+            $('#' + index).parent().addClass("active");
+
+            var audio = document.getElementById('audio');
+            audio.play();
+            audio.pause();
+            var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
+            $('#audio').attr('src', link);
+            audio.load();
+            audio.playbackRate = $('#sudu').val();
+            audio.volume = $('#liang').val();
+            function canPlay() {
+                if (audio.readyState === 4) {
+                    // 在这里可以执行播放音频的操作
+                    audio.play();
+                }
+            }
+            audio.addEventListener('canplaythrough', canPlay);
+
+            $("#no").val(no);
+            $(".wenhao").show();
+        }
+    </script>
+</body>
+<style type='text/css'>
+    .text_row {
+        padding: 0;
+        display: block;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .text_Box {
+        /* flex: 0 0 33.3333%; */
+        /* 每个li占据总宽度的33.3333% */
+        /* width: 100px;
+        height: 100px; */
+        /* background-color: #0000ff; text_Box */
+        border: #0000ff 2px solid;
+    }
+
+    /* .example_item {
+        width: 100%;
+    } */
+
+    .wenhao {
+        display: none;
+        width: 30px;
+        height: 65px;
+        margin: -10px auto;
+        font-size: 50px;
+        padding: 0;
+    }
+
+    .icon {
+        width: 30px;
+        height: 30px;
+        margin: 0 auto;
+    }
+
+    .answer {
+        display: none;
+    }
+
+    .loading {
+        position: fixed;
+        /* width: 100px;
+        height: 30px;*/
+        line-height: 30px;
+        text-align: center;
+        color: dodgerblue;
+        /*background-color: white;*/
+        /*border-radius: 15px;*/
+        margin: 0 auto;
+        top: 50%;
+        left: 50%;
+        margin-left: -40px;
+        margin-top: -40px;
+        display: none;
+    }
+
+    .mask {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .5);
+        display: none;
+    }
+
+    html {
+        overflow-x: initial !important;
+    }
+
+    html {
+        font-size: 14px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        margin: 0px;
+        padding: 0px;
+        height: auto;
+        inset: 0px;
+        font-size: 1rem;
+        line-height: 1.42857;
+        overflow-x: hidden;
+        background: inherit;
+        tab-size: 4;
+    }
+
+    ul li {
+        list-style-type: none;
+    }
+
+    div li {
+        list-style-type: none;
+    }
+
+    #show_box {
+        margin-top: 70px;
+    }
+
+
+    .B_Box {
+        margin-left: 12px;
+    }
+
+    .C_Box {
+        margin-left: 18px;
+    }
+
+    .A_grammars {
+        font-size: 1.2rem;
+        border: 2px dashed #c5c3c3;
+        background-color: #f0f1f1;
+    }
+
+    .B_definitions {
+        font-size: 1rem;
+        color: blue;
+    }
+
+    .C_examples {
+        font-size: 1rem;
+        color: gray;
+    }
+
+    .add_du {
+        display: block;
+        width: 100%;
+        line-height: 22px;
+        font-size: 15px;
+    }
+
+    .tool_box {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        z-index: 1000;
+        /* 确保元素在其他内容之上 */
+    }
+
+    .grammar_no_box {
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        color: #0000ff;
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .grammar_box {
+        margin-right: 10px;
+    }
+
+    .grammar_lv_box {
+        /* float: right; */
+        margin-right: 10px;
+    }
+
+    .grammar_page_box {
+        margin-right: 10px;
+        float: right;
+        color: grey;
+        font-size: 12px;
+    }
+
+    .definitions_no_box {
+        color: grey;
+        font-size: 13px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .noteA_box {
+        color: brown;
+    }
+
+    .jiexu_box {
+        display: none;
+        font-size: 10px;
+        margin-left: 28px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .no_box {
+        border: 1px solid #dde4f9;
+        border-radius: 10px;
+        display: inline-block;
+        text-align: center;
+        width: 15px;
+        /*#55b7ff*/
+        background-color: #dde4f9;
+        color: #000000;
+        margin-right: 10px;
+    }
+
+    .active {
+        background-color: gold;
+    }
+
+    .bule_start {
+        background-color: cornflowerblue;
+        color: white;
+        text-align: center;
+        border-color: cornflowerblue;
+    }
+
+    .red_start {
+        background-color: crimson;
+        border-color: crimson;
+    }
+
+    .audio_box {
+        height: 12px;
+        line-height: 12px;
+        display: none;
+    }
+
+
+    .redClass {
+        background-color: #c76666;
+        border-color: #c76666;
+    }
+
+    .anchor {
+        font-size: 10px;
+        color: #0000ff;
+    }
+</style>
+</body>
+
+</html>

@@ -14,7 +14,9 @@
 
         <!--语速:<input audio type="number" id="speed" style="width:30px;" value="1" />  <input type="number" id="sudu" style="width: 30px;" value="1.25" />-->
         <div style="display: inline-block; margin-top: 8px; margin-left: 8px; ">
-            序号:<input type="number" id="no" style="width: 30px;" value="1" />
+            序号:
+            <input type="number" id="no" min="1"step="1" style="width: 30px;" value="1"> 
+
             间隔:<input type="number" id="interval" style="width: 30px;" value="0" />
             速度:
             <select id="sudu" style="width: 50px;" value="1">
@@ -27,9 +29,8 @@
             </select>
             <input type="number" id="liang" style="width: 30px;display:none;" value="1" />
             <div style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px;">
-                <input type="button" id="getEditData" class="bule_start" value="获取" onclick="text()" />
+                <!-- <input type="button" id="getEditData" class="bule_start" value="获取" onclick="text()" /> -->
                 <input type="button" id="playContral" class="bule_start" value="播放" onclick="speakAll()" />
-                <input type="button" id="ShowNidContral" class="bule_start" value="开" onclick="ShowNidF()" />
 
             </div>
         </div>
@@ -53,7 +54,7 @@
                 html += "<li>";
                 keys.forEach(itemKey => {
                     if (itemKey === 'Name') {
-                        html += "<div class='example_item'>" + item[itemKey];
+                        html += "<div id=" + (index + 1) + " class='example_item'>" + item[itemKey];
                         html += "<svg onclick=speakItem('" + item[itemKey] + "','" + index + "') t=\"1713489413249\" class=\"icon\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" p-id=\"1509\" width=\"12\" height=\"12\"><path d=\"M512.3 764.3c176 0 320-144 320-320v-60c0-176-144-320-320-320s-320 144-320 320v60c0 176 144 320 320 320z m-260-320v-60c0-34.9 6.9-68.8 20.5-100.8 13.2-31 32-58.8 56-82.8s51.8-42.8 82.8-56c32-13.6 65.9-20.5 100.8-20.5s68.8 6.9 100.8 20.5c31 13.2 58.8 32 82.8 56s42.8 51.8 56 82.8c13.6 32 20.5 65.9 20.5 100.8v60c0 34.9-6.9 68.8-20.5 100.8-13.2 31-32 58.8-56 82.8s-51.8 42.8-82.8 56c-32 13.6-65.9 20.5-100.8 20.5-34.9 0-68.8-6.9-100.8-20.5-31-13.2-58.8-32-82.8-56s-42.8-51.8-56-82.8c-13.7-32-20.5-65.9-20.5-100.8z\" fill=\"#696969\" p-id=\"1510\"></path><path d=\"M918.6 513.2c-13.8 0-25.9 9.5-29.1 22.9-4.9 20.6-11.6 40.8-20 60.4-19.6 46.2-47.7 87.7-83.4 123.4s-77.3 63.8-123.4 83.4c-47.7 20.3-98.3 30.6-150.4 30.6-52.1 0-102.7-10.3-150.4-30.6-46.2-19.6-87.7-47.7-123.4-83.4s-63.8-77.3-83.4-123.4c-8.4-19.7-15-39.9-20-60.4-3.2-13.5-15.3-22.9-29.1-22.9-19.4 0-33.7 18.1-29.2 37 45 187.1 208.3 329.5 405.5 342.7v36.7c0 16.6 13.4 30 30 30s30-13.4 30-30v-36.7c197.2-13.2 360.5-155.6 405.5-342.7 4.5-18.8-9.8-37-29.2-37z\" fill=\"#696969\" p-id=\"1511\"></path></svg>";
                         html += "</div>";
                         html += "<span>" + (index + 1) + "</span>";
@@ -110,25 +111,16 @@
         }
         //循环读
         function* gen() {
-            var examples = dataAll.map(x=>x.Name);
-
-            var topno = $('#topno').val();
             var endno = $('#endno').val();
             var eplayNoStart = 0;
             var eplayNoEnd = 0;
-            if (topno > 0) {
-                eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
-                eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
-
-                examples = examples.slice(eplayNoStart, eplayNoEnd);
-            }
 
             var arrayPlay;
             if (parseInt(playIndex) > 0) {
-                arrayPlay = examples.slice(playIndex);
+                arrayPlay = dataAll.slice(playIndex);
             }
             else {
-                arrayPlay = examples;
+                arrayPlay = dataAll;
             }
             for (var i = 0; i < arrayPlay.length; i++) {
                 if (i > 0 || playIndex > 0) {
@@ -136,19 +128,20 @@
                     var elementOffset = $('#' + goIndex).offset();
                     var elementTop = elementOffset.top;
 
-                    // const targetElement = document.querySelector("#target");
                     window.scroll({
                         top: elementTop - 160,
                         behavior: 'smooth'
                     });
                 }
-                let a1 = yield asyncThunk(arrayPlay[i].Text, i, arrayPlay);
+                let a1 = yield asyncThunk(arrayPlay[i].Name, i, arrayPlay);
                 //停止时，跳出循环
                 if (!a1) {
                     break;
                 } else {
-                    var goIndex = examples.findIndex(x => x.Name === arrayPlay[i].Text);
-                    //console.log(goIndex, 'else   goIndex')
+                    console.log(dataAll, 'dataAll')
+                    console.log(arrayPlay[i], 'arrayPlay[i]')
+                    var goIndex = dataAll.findIndex(x => x.Name === arrayPlay[i].Name);
+                    console.log(goIndex, 'else   goIndex')
                     $('.mask').hide();
                     $('.loading').hide();
                     //设置当前读的例句高亮
@@ -171,8 +164,8 @@
             }
             callBack();
         }
-         //延时
-         function asyncThunk(Text, i, arrayPlay) {
+        //延时
+        function asyncThunk(Text, i, arrayPlay) {
             return function (callBack) {
                 var miao = 0;
                 if (i === 0) miao = 1;
@@ -181,59 +174,48 @@
                     //miao = audio.duration + 1;
                     if ($('#sudu').val() === "1") {
                         miao = 4;
-                        if (arrayPlay[i - 1].Text.length >= 10) {
+                        if (arrayPlay[i - 1].Name.length >= 10) {
                             miao = 4;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 17) {
+                        if (arrayPlay[i - 1].Name.length >= 17) {
                             miao = 5;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 25) {
+                        if (arrayPlay[i - 1].Name.length >= 25) {
                             miao = 6;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 30) {
+                        if (arrayPlay[i - 1].Name.length >= 30) {
                             miao = 8;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 40) {
+                        if (arrayPlay[i - 1].Name.length >= 40) {
                             miao = 9;
                         }
                     } else if ($('#sudu').val() === '1.5' || $('#sudu').val() === '1.25') {
-                        if (arrayPlay[i - 1].Text.length >= 10) {
+                        if (arrayPlay[i - 1].Name.length >= 10) {
                             miao = 3;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 20) {
+                        if (arrayPlay[i - 1].Name.length >= 20) {
                             miao = 4;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 30) {
+                        if (arrayPlay[i - 1].Name.length >= 30) {
                             miao = 5;
                         }
-                        if (arrayPlay[i - 1].Text.length >= 40) {
+                        if (arrayPlay[i - 1].Name.length >= 40) {
                             miao = 6;
                         }
                     }
                     if ($('#sudu').val() === '1.25') {
-                        if (arrayPlay[i - 1].Text.length >= 30) {
+                        if (arrayPlay[i - 1].Name.length >= 30) {
                             miao = 6;
                         }
                     }
-                    //console.log(arrayPlay[i - 1].Text.length, miao, 'miao')
+                    //console.log(arrayPlay[i - 1].Name.length, miao, 'miao')
                 }
                 setTimeout(() => callBack(speak(Text, i)), (miao * 1000 + $('#interval').val() * 1000));
             };
         }
         //读
         function speak(text, i) {
-            var examples = dataAll.map(x=>x.Name);
-
-            var topno = $('#topno').val();
-            var endno = $('#endno').val();
-            var eplayNoStart = 0;
-            var eplayNoEnd = 0;
-            if (topno > 0) {
-                eplayNoStart = examples.findIndex(x => x.Nid === (parseInt(topno) + 1));
-                eplayNoEnd = examples.findIndex(x => x.Nid === (parseInt(topno) + parseInt(endno) + 1));
-                examples = examples.slice(eplayNoStart, eplayNoEnd);
-            }
-
+            console.log(text,'text')
             if (!isPlay) {
                 playIndex = i;
                 return false;

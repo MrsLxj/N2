@@ -4,7 +4,7 @@
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width initial-scale=1'>
-    <title>日语语法</title>
+    <title>单词记仇本</title>
     <script src="https://mrslxj.github.io/N2/js/jquery.min.js"></script>
     <script src="js/index/index.js?v=1"></script>
 </head>
@@ -69,9 +69,11 @@
         }
 
         function speakItem(text, index) {
+            //赋值序号
+            var no = parseInt(index) + 1;
             //设置当前读的例句高亮
             $('.example_item').removeClass("active");
-            $('#' + index).addClass("active");
+            $('#' + no).addClass("active");
 
             var audio = document.getElementById('audio');
             audio.play();
@@ -89,8 +91,6 @@
             }
             audio.addEventListener('canplaythrough', canPlay);
 
-            //赋值序号
-            var no = parseInt(index) + 1;
             $("#no").val(no);
         }
         //从no开始读

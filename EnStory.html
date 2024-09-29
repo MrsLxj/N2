@@ -44,18 +44,19 @@
             wordList.forEach(element => {
                 console.log(element.reading.length);
                 for (var i = 0; i < element.reading.length; i++) {
-                    console.log(i, ' i');
-                    temp += element.reading[i];
-                    if (temp.length > 550) {
-                        arr.push(txts);
-                        temp = "";
-                        txts = "";
-                        if (i === (element.reading.length - 1)) {
-                            arr.push(element.reading[i]);
-                        }
-                    } else {
-                        txts += element.reading[i];
-                    }
+                    console.log(element.reading[i], ' element.reading[i]');
+                    // temp += element.reading[i];
+                    arr.push(element.reading[i]);
+                    // if (temp.length > 550) {
+                    //     arr.push(txts);
+                    //     temp = "";
+                    //     txts = "";
+                    //     if (i === (element.reading.length - 1)) {
+                    //         arr.push(element.reading[i]);
+                    //     }
+                    // } else {
+                    //     txts += element.reading[i];
+                    // }
                 }
             })
             console.log(arr);
@@ -63,15 +64,16 @@
         }
         function speakAuto() {
             if (ino >= arr.length) {
-                audio.pause();   //暂停
-                arr = [];  //清空
+                // audio.pause();   //暂停
+                // arr = [];  //清空
                 ino = 0;  //只保留这一行，可以循环播放
             }
             var text = arr[ino];
             var audio = document.getElementById('audio');
             audio.play();
             audio.pause();
-            var link = "https://dict.youdao.com/dictvoice?le=en&type=3&audio=" + text;
+            // var link = "https://dict.youdao.com/dictvoice?le=en&type=3&audio=" + text;
+            var link = "https://dict.youdao.com/dictvoice?le=jap&type=3&audio=" + text;
             $('#audio').attr('src', link);
             audio.load();
             audio.playbackRate = 1;
